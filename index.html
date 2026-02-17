@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Wedding Prep Pro - Team Scheduler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfbfb;
+        }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        .service-checkbox:checked + label {
+            background-color: #0f172a;
+            color: white;
+            border-color: #0f172a;
+        }
+        .schedule-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .schedule-scroll::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+        <!-- Header -->
+        <div class="bg-slate-900 p-6 md:p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl mb-1">Prep Timeline Pro</h1>
+                    <p class="text-slate-400 text-sm">Balanced Team Load • Lead Sync • Manual Refresh & Reset</p>
+                </div>
+                <div class="text-right hidden sm:block">
+                    <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Version 9.4</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12">
+            <!-- Left Sidebar: Settings & Inputs -->
+            <div class="p-6 bg-slate-50 border-r border-gray-200 lg:col-span-3">
+                <h2 class="text-lg text-slate-800 mb-6 font-bold">Settings</h2>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Ready By Time</label>
+                        <input type="time" id="readyTime" value="13:00" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-slate-900 outline-none font-semibold text-sm" oninput="calculate()">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Hair Artists</label>
+                            <input type="number" id="hairArtists" value="1" min="1" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-slate-900 outline-none text-sm font-bold" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Makeup Artists</label>
+                            <input type="number" id="makeupArtists" value="1" min="1" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-slate-900 outline-none text-sm font-bold" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-200">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Add to Roster</h3>
+                            <div class="flex items-center space-x-1">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase">Qty:</span>
+                                <input type="number" id="addQuantity" value="1" min="1" max="20" class="w-10 p-1 border rounded text-xs text-center font-bold text-slate-700">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <button onclick="addBulk('Bride', true, true)" class="w-full text-left px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm"> + Add Bride </button>
+                            
+                            <div class="py-2 border-t border-slate-200 mt-2">
+                                <p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Bridal Party Bulk Add</p>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <button onclick="addBulk('Bridal Party', true, true)" class="text-left px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition shadow-sm"> + Hair & Makeup </button>
+                                    <button onclick="addBulk('Bridal Party', true, false)" class="text-left px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm"> + Hair Only </button>
+                                    <button onclick="addBulk('Bridal Party', false, true)" class="text-left px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm"> + Makeup Only </button>
+                                </div>
+                            </div>
+
+                            <button onclick="addBulk('Touch Ups')" class="w-full text-left px-3 py-2.5 bg-rose-50 border border-rose-100 rounded-lg text-xs font-bold text-rose-700 hover:bg-rose-100 transition shadow-sm"> + Add Touch-Up Hour </button>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-gray-200">
+                        <button onclick="resetRoster()" class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-slate-200 text-slate-600 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition shadow-sm uppercase tracking-widest">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            <span>Reset Schedule</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle: Roster -->
+            <div class="p-6 lg:col-span-4 border-r border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl text-slate-800 font-bold">Service Roster</h2>
+                    <span id="serviceCount" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">0 Services</span>
+                </div>
+                
+                <div id="rosterList" class="space-y-3 max-h-[700px] overflow-y-auto pr-2 schedule-scroll">
+                    <!-- Roster items -->
+                </div>
+
+                <div id="emptyState" class="hidden text-center py-12 border-2 border-dashed border-gray-100 rounded-xl">
+                    <p class="text-gray-400 text-sm">Roster is empty. Add clients to begin.</p>
+                </div>
+            </div>
+
+            <!-- Right: Master Timeline -->
+            <div class="p-6 lg:col-span-5 bg-white overflow-y-auto max-h-[85vh] schedule-scroll">
+                <div class="mb-6 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-xl text-slate-800 font-bold">Master Schedule</h2>
+                        <p class="text-xs text-slate-400 italic">Balanced Distribution & Dynamic Lead Priority</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] uppercase font-bold text-rose-400 block tracking-widest">Earliest Arrival</span>
+                        <div id="displayStart" class="text-2xl font-bold text-rose-900">--:--</div>
+                    </div>
+                </div>
+
+                <div id="timelineContainer" class="space-y-8">
+                    <!-- Station timelines -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let roster = [
+            { id: 1, role: 'Bride', hair: true, makeup: true, type: 'person' }
+        ];
+
+        // The "Refresh/Reset" function
+        function resetRoster() {
+            // Confirmation via custom look (since alert/confirm is discouraged, we'll just execute it)
+            // or we just return to initial state
+            roster = [
+                { id: Date.now(), role: 'Bride', hair: true, makeup: true, type: 'person' }
+            ];
+            document.getElementById('addQuantity').value = 1;
+            document.getElementById('hairArtists').value = 1;
+            document.getElementById('makeupArtists').value = 1;
+            calculate();
+        }
+
+        function addBulk(role, h = true, m = true) {
+            const quantity = parseInt(document.getElementById('addQuantity').value) || 1;
+            for(let i = 0; i < quantity; i++) {
+                if (role === 'Touch Ups') addTouchUp();
+                else addPerson(role, h, m);
+            }
+            document.getElementById('addQuantity').value = 1;
+            calculate();
+        }
+
+        function addPerson(role, h = true, m = true) {
+            roster.push({ 
+                id: Date.now() + Math.random(), 
+                role: role, 
+                hair: h, 
+                makeup: m, 
+                type: 'person' 
+            });
+            calculate();
+        }
+
+        function addTouchUp() {
+            roster.push({ 
+                id: Date.now() + Math.random(), 
+                role: 'Touch Ups', 
+                type: 'touchup',
+                hours: 1,
+                category: 'Hair' 
+            });
+            calculate();
+        }
+
+        function removePerson(id) {
+            roster = roster.filter(p => p.id !== id);
+            calculate();
+        }
+
+        function toggleService(id, service) {
+            const p = roster.find(x => x.id === id);
+            if (p) {
+                p[service] = !p[service];
+                calculate();
+            }
+        }
+
+        function updateTouchUpHours(id, val) {
+            const p = roster.find(x => x.id === id);
+            if (p) {
+                p.hours = Math.max(1, parseInt(val) || 1);
+                calculate();
+            }
+        }
+
+        function toggleTouchUpCat(id) {
+            const p = roster.find(x => x.id === id);
+            if (p) {
+                p.category = p.category === 'Hair' ? 'Makeup' : 'Hair';
+                calculate();
+            }
+        }
+
+        function formatTime(date) {
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            return `${hours}:${minutes}${ampm}`;
+        }
+
+        function calculate() {
+            const readyTimeStr = document.getElementById('readyTime').value;
+            const hairArtistsCount = parseInt(document.getElementById('hairArtists').value) || 1;
+            const makeupArtistsCount = parseInt(document.getElementById('makeupArtists').value) || 1;
+            
+            const rosterContainer = document.getElementById('rosterList');
+            const timelineContainer = document.getElementById('timelineContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (roster.length === 0) {
+                rosterContainer.innerHTML = '';
+                timelineContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                document.getElementById('displayStart').innerText = "--:--";
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            let hairBride = [], hairParty = [], hairTouchups = [];
+            let makeupBride = [], makeupParty = [], makeupTouchups = [];
+
+            roster.forEach(item => {
+                if (item.type === 'person') {
+                    const duration = (item.role === 'Bride') ? 90 : 60;
+                    if (item.hair) {
+                        const entry = { label: `${item.role} Hair`, duration, isBride: item.role === 'Bride' };
+                        if (item.role === 'Bride') hairBride.push(entry); else hairParty.push(entry);
+                    }
+                    if (item.makeup) {
+                        const entry = { label: `${item.role} Makeup`, duration, isBride: item.role === 'Bride' };
+                        if (item.role === 'Bride') makeupBride.push(entry); else makeupParty.push(entry);
+                    }
+                } else {
+                    const duration = item.hours * 60;
+                    const entry = { label: `Touch Ups (${item.category})`, duration, isTouchup: true };
+                    if (item.category === 'Hair') hairTouchups.push(entry); else makeupTouchups.push(entry);
+                }
+            });
+
+            document.getElementById('serviceCount').innerText = `${hairBride.length + hairParty.length + hairTouchups.length + makeupBride.length + makeupParty.length + makeupTouchups.length} Services`;
+
+            const hairStations = Array.from({ length: hairArtistsCount }, (_, i) => ({ 
+                workload: (i === 0 && hairBride.length > 0) ? 90 : 0, 
+                items: [], 
+                touchups: [], 
+                isLead: i === 0 
+            }));
+            const makeupStations = Array.from({ length: makeupArtistsCount }, (_, i) => ({ 
+                workload: (i === 0 && makeupBride.length > 0) ? 90 : 0, 
+                items: [], 
+                touchups: [] , 
+                isLead: i === 0 
+            }));
+
+            hairParty.forEach(q => {
+                hairStations.sort((a, b) => a.workload - b.workload);
+                hairStations[0].items.push(q); 
+                hairStations[0].workload += q.duration;
+            });
+            makeupParty.forEach(q => {
+                makeupStations.sort((a, b) => a.workload - b.workload);
+                makeupStations[0].items.push(q); 
+                makeupStations[0].workload += q.duration;
+            });
+
+            hairTouchups.forEach(q => {
+                hairStations.sort((a, b) => a.workload - b.workload);
+                hairStations[0].touchups.push(q);
+                hairStations[0].workload += q.duration;
+            });
+            makeupTouchups.forEach(q => {
+                makeupStations.sort((a, b) => a.workload - b.workload);
+                makeupStations[0].touchups.push(q);
+                makeupStations[0].workload += q.duration;
+            });
+
+            const [h, m] = readyTimeStr.split(':').map(Number);
+            const readyDate = new Date();
+            readyDate.setHours(h, m, 0, 0);
+
+            const getLeadPartyMinutes = (stations) => stations.find(s => s.isLead).items.reduce((sum, i) => sum + i.duration, 0);
+            
+            const hasBrideHair = hairBride.length > 0;
+            const hasBrideMakeup = makeupBride.length > 0;
+
+            const leadHairTotal = (hasBrideHair ? 90 : 0) + getLeadPartyMinutes(hairStations);
+            const leadMakeupTotal = (hasBrideMakeup ? 90 : 0) + getLeadPartyMinutes(makeupStations);
+            
+            const leadMaxSpan = Math.max(leadHairTotal, leadMakeupTotal);
+            const leadStartTime = new Date(readyDate.getTime() - (leadMaxSpan * 60000));
+
+            let teamEarliestArrival = new Date(leadStartTime.getTime());
+
+            rosterContainer.innerHTML = roster.map(p => {
+                const isBride = p.role === 'Bride';
+                return `
+                    <div class="p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-slate-300 transition-colors flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full ${isBride ? 'bg-rose-600' : 'bg-slate-900'} flex items-center justify-center text-[9px] font-bold text-white shadow-md">
+                                ${isBride ? 'BR' : (p.type === 'touchup' ? 'TU' : 'BP')}
+                            </div>
+                            <span class="text-sm font-bold text-slate-800">${p.role}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            ${p.type === 'person' ? `
+                                <div class="flex space-x-1">
+                                    <input type="checkbox" id="h-${p.id}" class="hidden service-checkbox" ${p.hair ? 'checked' : ''} onchange="toggleService(${p.id}, 'hair')">
+                                    <label for="h-${p.id}" class="px-2 py-1 border rounded text-[9px] font-bold uppercase cursor-pointer border-gray-100 text-slate-400 bg-slate-50">Hair</label>
+                                    <input type="checkbox" id="m-${p.id}" class="hidden service-checkbox" ${p.makeup ? 'checked' : ''} onchange="toggleService(${p.id}, 'makeup')">
+                                    <label for="m-${p.id}" class="px-2 py-1 border rounded text-[9px] font-bold uppercase cursor-pointer border-gray-100 text-slate-400 bg-slate-50">Makeup</label>
+                                </div>
+                            ` : `
+                                <button onclick="toggleTouchUpCat(${p.id})" class="px-2 py-1 bg-white border border-rose-200 rounded text-[9px] font-bold text-rose-600 uppercase transition-colors hover:bg-rose-100">${p.category}</button>
+                                <input type="number" value="${p.hours}" class="w-10 py-1 border border-rose-200 rounded text-center text-xs font-bold text-rose-700 bg-white" onchange="updateTouchUpHours(${p.id}, this.value)">
+                            `}
+                            <button onclick="removePerson(${p.id})" class="text-slate-200 hover:text-rose-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" /></svg></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            let timelinesHTML = '';
+            const processStation = (station, type, index) => {
+                const isLead = station.isLead;
+                const stationPartyTotal = station.items.reduce((sum, i) => sum + i.duration, 0);
+                const stationTouchupTotal = station.touchups.reduce((sum, i) => sum + i.duration, 0);
+
+                let startTime;
+                if (isLead) startTime = new Date(leadStartTime.getTime());
+                else startTime = new Date(readyDate.getTime() - ((stationPartyTotal + stationTouchupTotal) * 60000));
+
+                if (startTime < teamEarliestArrival) teamEarliestArrival = startTime;
+
+                let html = `<div>
+                    <h3 class="flex items-center text-sm font-bold uppercase tracking-widest ${isLead ? 'text-slate-900' : 'text-slate-400'} mb-3">
+                        <span class="w-2 h-2 rounded-full ${isLead ? 'bg-rose-600' : 'bg-slate-300'} mr-2"></span>
+                        ${type} Artist ${index + 1} ${isLead ? '(LEAD)' : ''}
+                    </h3>
+                    <div class="space-y-2">
+                `;
+
+                let currentTime = new Date(startTime.getTime());
+
+                if (type === 'Hair' && isLead && hasBrideHair) {
+                    const brideStart = new Date(currentTime.getTime());
+                    const brideEnd = new Date(brideStart.getTime() + (90 * 60000));
+                    html += `
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50 border border-rose-100 shadow-md border-l-4 border-rose-600">
+                            <div><div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Hair)</div></div>
+                            <div class="text-right text-[11px] font-black text-rose-600">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
+                        </div>
+                    `;
+                    currentTime = brideEnd;
+                }
+
+                station.items.forEach(item => {
+                    const itemEnd = new Date(currentTime.getTime() + (item.duration * 60000));
+                    html += `
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100 shadow-sm border-l-4 border-slate-300">
+                            <div><div class="text-[11px] font-bold text-slate-700 uppercase">${item.label}</div></div>
+                            <div class="text-right text-[11px] font-extrabold text-slate-900">${formatTime(currentTime)} - ${formatTime(itemEnd)}</div>
+                        </div>
+                    `;
+                    currentTime = itemEnd;
+                });
+
+                if (type === 'Makeup' && isLead && hasBrideMakeup) {
+                    const brideStart = new Date(readyDate.getTime() - (90 * 60000));
+                    const brideEnd = new Date(readyDate.getTime());
+                    if (brideStart > currentTime) {
+                        html += `<div class="py-1 text-center text-[9px] text-slate-300 font-bold uppercase tracking-widest border-y border-dashed border-slate-100 my-1">Transitional Gap</div>`;
+                    }
+                    html += `
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50 border border-rose-100 shadow-md border-l-4 border-rose-600">
+                            <div><div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Makeup)</div></div>
+                            <div class="text-right text-[11px] font-black text-rose-600">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
+                        </div>
+                    `;
+                    currentTime = brideEnd;
+                }
+
+                station.touchups.forEach(item => {
+                    const itemEnd = new Date(currentTime.getTime() + (item.duration * 60000));
+                    html += `
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50/50 border border-rose-100 border-l-4 border-rose-400 italic">
+                            <div><div class="text-[11px] font-bold text-rose-800 uppercase">${item.label}</div></div>
+                            <div class="text-right text-[11px] font-bold text-rose-600">${formatTime(currentTime)} - ${formatTime(itemEnd)}</div>
+                        </div>
+                    `;
+                    currentTime = itemEnd;
+                });
+
+                html += `</div></div>`;
+                return html;
+            };
+
+            hairStations.sort((a,b) => (a.isLead ? -1 : 1));
+            makeupStations.sort((a,b) => (a.isLead ? -1 : 1));
+
+            hairStations.forEach((s, i) => timelinesHTML += processStation(s, 'Hair', i));
+            makeupStations.forEach((s, i) => timelinesHTML += processStation(s, 'Makeup', i));
+
+            timelineContainer.innerHTML = timelinesHTML;
+            document.getElementById('displayStart').innerText = formatTime(teamEarliestArrival);
+        }
+
+        window.onload = calculate;
+    </script>
+</body>
+</html>
