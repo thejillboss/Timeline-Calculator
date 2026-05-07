@@ -24,6 +24,18 @@
             background-color: #e2e8f0;
             border-radius: 10px;
         }
+        details.bride-slot-adj > summary {
+            list-style: none;
+        }
+        details.bride-slot-adj > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.bride-slot-adj .bride-slot-chevron {
+            transition: transform 0.2s ease;
+        }
+        details.bride-slot-adj[open] .bride-slot-chevron {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
@@ -72,16 +84,16 @@
                                 <input type="number" id="addQuantity" value="1" min="1" max="20" class="w-10 p-1 border rounded text-xs text-center font-bold text-slate-700">
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label for="addPersonNames" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Name(s) when adding</label>
+                            <input type="text" id="addPersonNames" autocomplete="off" placeholder="Optional — comma separates each person" class="w-full p-2 border rounded-md text-xs focus:ring-2 focus:ring-slate-900 outline-none">
+                            <p class="text-[9px] text-slate-400 mt-1 leading-snug">Applied to Bride or numbered bridal party rows. Edit anytime in the roster.</p>
+                        </div>
                         <div class="space-y-2">
                             <button onclick="addBulk('Bride', true, true)" class="w-full text-left px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm"> + Add Bride </button>
                             
                             <div class="py-2 border-t border-slate-200 mt-2">
-                                <p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Bridal Party Bulk Add</p>
-                                <div class="grid grid-cols-1 gap-2">
-                                    <button onclick="addBulk('Bridal Party', true, true)" class="text-left px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition shadow-sm"> + Hair & Makeup </button>
-                                    <button onclick="addBulk('Bridal Party', true, false)" class="text-left px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm"> + Hair Only </button>
-                                    <button onclick="addBulk('Bridal Party', false, true)" class="text-left px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm"> + Makeup Only </button>
-                                </div>
+                                <button type="button" title="Adds one row per quantity (Hair & Makeup). Names: use the field above, comma-separated to match order. Numbers continue from the last Bridal Party Member #." onclick="addBulkNumberedPartyMembers(true, true)" class="w-full text-left px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-sm border-dashed"> + Bridal Party Member(s) — numbered </button>
                             </div>
 
                             <button onclick="addBulk('Touch Ups')" class="w-full text-left px-3 py-2.5 bg-rose-50 border border-rose-100 rounded-lg text-xs font-bold text-rose-700 hover:bg-rose-100 transition shadow-sm"> + Add Touch-Up Hour </button>
@@ -100,7 +112,7 @@
             </div>
 
             <!-- Middle: Roster -->
-            <div class="p-6 lg:col-span-4 border-r border-gray-100">
+            <div class="p-6 lg:col-span-5 border-r border-gray-100">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl text-slate-800 font-bold">Service Roster</h2>
                     <span id="serviceCount" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">0 Services</span>
@@ -116,28 +128,60 @@
             </div>
 
             <!-- Right: Master Timeline -->
-            <div class="p-6 lg:col-span-5 bg-white overflow-y-auto max-h-[85vh] schedule-scroll">
-                <div class="mb-6 flex justify-between items-end">
+            <div class="p-6 lg:col-span-4 bg-white overflow-y-auto max-h-[85vh] schedule-scroll">
+                <div class="mb-6 flex justify-between items-end gap-4">
                     <div>
                         <h2 class="text-xl text-slate-800 font-bold">Master Schedule</h2>
                         <p class="text-xs text-slate-400 italic">Balanced Distribution & Dynamic Lead Priority</p>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right shrink-0">
                         <span class="text-[10px] uppercase font-bold text-rose-400 block tracking-widest">Earliest Arrival</span>
                         <div id="displayStart" class="text-2xl font-bold text-rose-900">--:--</div>
                     </div>
                 </div>
+                <div id="brideSlotControlsWrap" class="hidden mb-5">
+                    <!-- Amber notices when scheduler auto-adjusts bride slots -->
+                </div>
 
                 <div id="timelineContainer" class="space-y-8">
                     <!-- Station timelines -->
+                </div>
+
+                <div class="mt-8 pt-5 border-t border-slate-200/80">
+                    <button type="button" id="exportSheetsBtn" disabled
+                        onclick="exportScheduleCsvForGoogleSheets()"
+                        class="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50/80 px-2.5 py-1.5 text-[11px] font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-800 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-35">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M8 12l4 4 4-4m-4-4v8"/></svg>
+                        Export to Google Sheets (CSV)
+                    </button>
+                    <p class="mt-2 text-[10px] text-slate-400 leading-relaxed max-w-md">Opens as a spreadsheet after import in Google Sheets: File → Import → Upload, or <a href="https://docs.google.com/spreadsheets/u/0/create" target="_blank" rel="noopener noreferrer" class="text-slate-500 underline underline-offset-2 hover:text-slate-700">sheet.new</a></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        function escapeHtml(s) {
+            return String(s ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function scheduleBaseLabel(person) {
+            if (!person || person.type !== 'person') return '';
+            const n = person.personName && String(person.personName).trim();
+            return n || person.role;
+        }
+
+        function splitNamesForAdds(raw, count) {
+            const parts = String(raw || '').split(',').map(t => t.trim()).filter(Boolean);
+            return Array.from({ length: count }, (_, i) => parts[i] || '');
+        }
+
         let roster = [
-            { id: 1, role: 'Bride', hair: true, makeup: true, type: 'person' }
+            { id: 1, role: 'Bride', hair: true, makeup: true, hairMinutes: 90, makeupMinutes: 90, type: 'person' }
         ];
 
         // The "Refresh/Reset" function
@@ -145,33 +189,125 @@
             // Confirmation via custom look (since alert/confirm is discouraged, we'll just execute it)
             // or we just return to initial state
             roster = [
-                { id: Date.now(), role: 'Bride', hair: true, makeup: true, type: 'person' }
+                { id: Date.now(), role: 'Bride', hair: true, makeup: true, hairMinutes: 90, makeupMinutes: 90, type: 'person' }
             ];
             document.getElementById('addQuantity').value = 1;
             document.getElementById('hairArtists').value = 1;
             document.getElementById('makeupArtists').value = 1;
+            const nameEl = document.getElementById('addPersonNames');
+            if (nameEl) nameEl.value = '';
             calculate();
+        }
+
+        function nextBridalPartyMemberNumber() {
+            let max = 0;
+            roster.forEach(p => {
+                if (p.type !== 'person') return;
+                const m = /^Bridal Party Member (\d+)$/i.exec(p.role || '');
+                if (m) max = Math.max(max, parseInt(m[1], 10));
+            });
+            return max + 1;
+        }
+
+        function isPartyMemberRow(p) {
+            return p && p.type === 'person' && p.role !== 'Bride' && (
+                p.partyMember === true ||
+                p.role === 'Bridal Party' ||
+                /^Bridal Party Member \d+$/i.test(p.role || '')
+            );
+        }
+
+        function buildPerson(role, h = true, m = true, personName = '') {
+            const partyByName = /^Bridal Party Member \d+$/i.test(role);
+            const isParty = role === 'Bridal Party' || partyByName;
+            const trimmed = typeof personName === 'string' ? personName.trim() : '';
+            const person = {
+                id: Date.now() + Math.random(),
+                role: role,
+                hair: h,
+                makeup: m,
+                ...(role === 'Bride' ? { hairMinutes: 90, makeupMinutes: 90 } :
+                    isParty ? { partyMember: true, hairMinutes: 60, makeupMinutes: 60 } : {}),
+                type: 'person'
+            };
+            if (trimmed) person.personName = trimmed;
+            return person;
         }
 
         function addBulk(role, h = true, m = true) {
             const quantity = parseInt(document.getElementById('addQuantity').value) || 1;
+            const namesRaw = document.getElementById('addPersonNames') ? document.getElementById('addPersonNames').value : '';
+            const names = splitNamesForAdds(namesRaw, quantity);
             for(let i = 0; i < quantity; i++) {
                 if (role === 'Touch Ups') addTouchUp();
-                else addPerson(role, h, m);
+                else roster.push(buildPerson(role, h, m, names[i]));
             }
             document.getElementById('addQuantity').value = 1;
+            if (document.getElementById('addPersonNames')) document.getElementById('addPersonNames').value = '';
             calculate();
         }
 
-        function addPerson(role, h = true, m = true) {
-            roster.push({ 
-                id: Date.now() + Math.random(), 
-                role: role, 
-                hair: h, 
-                makeup: m, 
-                type: 'person' 
-            });
+        function addBulkNumberedPartyMembers(h = true, m = true) {
+            const quantity = parseInt(document.getElementById('addQuantity').value) || 1;
+            const namesRaw = document.getElementById('addPersonNames') ? document.getElementById('addPersonNames').value : '';
+            const names = splitNamesForAdds(namesRaw, quantity);
+            let n = nextBridalPartyMemberNumber();
+            for (let i = 0; i < quantity; i++) {
+                roster.push(buildPerson(`Bridal Party Member ${n}`, h, m, names[i]));
+                n++;
+            }
+            document.getElementById('addQuantity').value = 1;
+            if (document.getElementById('addPersonNames')) document.getElementById('addPersonNames').value = '';
             calculate();
+        }
+
+        function updatePersonName(id, raw) {
+            const p = roster.find(x => x.id === id && x.type === 'person');
+            if (!p || (p.role !== 'Bride' && !isPartyMemberRow(p))) return;
+            const v = typeof raw === 'string' ? raw.trim() : '';
+            if (v) p.personName = v;
+            else delete p.personName;
+            calculate();
+        }
+
+        function clampPartyHairMinutes(min) {
+            return min === 45 ? 45 : 60;
+        }
+
+        function clampPartyMakeupMinutes(min) {
+            return min === 45 ? 45 : 60;
+        }
+
+        function setPartyHairMinutes(id, min) {
+            const p = roster.find(x => x.id === id && x.type === 'person');
+            if (p && isPartyMemberRow(p)) {
+                p.hairMinutes = clampPartyHairMinutes(min);
+                calculate();
+            }
+        }
+
+        function setPartyMakeupMinutes(id, min) {
+            const p = roster.find(x => x.id === id && x.type === 'person');
+            if (p && isPartyMemberRow(p)) {
+                p.makeupMinutes = clampPartyMakeupMinutes(min);
+                calculate();
+            }
+        }
+
+        function setBrideHairMinutes(min) {
+            const p = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            if (p) {
+                p.hairMinutes = min === 60 ? 60 : 90;
+                calculate();
+            }
+        }
+
+        function setBrideMakeupMinutes(min) {
+            const p = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            if (p) {
+                p.makeupMinutes = min === 60 ? 60 : 90;
+                calculate();
+            }
         }
 
         function addTouchUp() {
@@ -223,6 +359,96 @@
             return `${hours}:${minutes}${ampm}`;
         }
 
+        function escapeCsvCell(value) {
+            const s = value == null ? '' : String(value);
+            if (/[",\r\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+            return s;
+        }
+
+        function exportScheduleCsvForGoogleSheets() {
+            const data = window.__timelineExport;
+            if (!data || !data.rows || data.rows.length === 0) {
+                alert('Add services to the roster to build a schedule first.');
+                return;
+            }
+            const header = ['Type', 'Discipline', 'Artist #', 'Role', 'Title', 'Start', 'End', 'Duration (min)'];
+            const lines = [header.map(escapeCsvCell).join(',')];
+            data.summary.forEach(row => lines.push(row.map(escapeCsvCell).join(',')));
+            lines.push('');
+            data.rows.forEach(row => lines.push(row.map(escapeCsvCell).join(',')));
+            const csv = '\uFEFF' + lines.join('\r\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = data.filename || 'master_schedule.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function hhmmLocal(date) {
+            return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        }
+
+        function hhmmParseOnSameDay(dayRef, hhmm) {
+            const m = String(hhmm || '').trim().match(/^(\d{1,2}):(\d{2})$/);
+            if (!m) return null;
+            const h = Math.min(23, Math.max(0, parseInt(m[1], 10)));
+            const mn = Math.min(59, Math.max(0, parseInt(m[2], 10)));
+            const d = new Date(dayRef.getTime());
+            d.setHours(h, mn, 0, 0);
+            return d;
+        }
+
+        function closestTimeInSlotList(dayRef, slots, preferredHHMM) {
+            if (!slots.length) return null;
+            const pref = preferredHHMM && hhmmParseOnSameDay(dayRef, preferredHHMM);
+            if (!pref) return slots[slots.length - 1];
+            let best = slots[0];
+            for (const s of slots) {
+                if (Math.abs(s.getTime() - pref.getTime()) < Math.abs(best.getTime() - pref.getTime())) best = s;
+            }
+            return best;
+        }
+
+        function buildSlotsInclusive(readyDate, durationMin, earliestStart, latestStart, stepMin = 15) {
+            const readyMs = readyDate.getTime();
+            const dur = durationMin * 60000;
+            const step = stepMin * 60000;
+            const loT = earliestStart.getTime();
+            const hiT = latestStart.getTime();
+            const lo = Math.min(loT, hiT);
+            const hi = Math.max(loT, hiT);
+            const out = [];
+            let t = Math.ceil(lo / step) * step;
+            while (t <= hi + 1) {
+                if (t + dur <= readyMs + 599) out.push(new Date(t));
+                t += step;
+            }
+            return out;
+        }
+
+        /** True if intervals [aStart,aEnd] and [bStart,bEnd] overlap (exclusive end-safe with ms). */
+        function intervalsOverlapMs(aStart, aEndExcl, bStart, bEndExcl) {
+            return Math.max(aStart, bStart) < Math.min(aEndExcl, bEndExcl);
+        }
+
+        function setBrideHairSlotHHMM(hhmm) {
+            const b = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            if (!b) return;
+            b.brideHairSlotHHMM = String(hhmm || '').trim();
+            calculate();
+        }
+
+        function setBrideMakeupSlotHHMM(hhmm) {
+            const b = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            if (!b) return;
+            b.brideMakeupSlotHHMM = String(hhmm || '').trim();
+            calculate();
+        }
+
         function calculate() {
             const readyTimeStr = document.getElementById('readyTime').value;
             const hairArtistsCount = parseInt(document.getElementById('hairArtists').value) || 1;
@@ -235,6 +461,17 @@
             if (roster.length === 0) {
                 rosterContainer.innerHTML = '';
                 timelineContainer.innerHTML = '';
+                const brideCtlEl = document.getElementById('brideSlotControlsWrap');
+                if (brideCtlEl) {
+                    brideCtlEl.innerHTML = '';
+                    brideCtlEl.classList.add('hidden');
+                    brideCtlEl.classList.remove('mb-5');
+                }
+                const exportBtnEmpty = document.getElementById('exportSheetsBtn');
+                if (exportBtnEmpty) {
+                    exportBtnEmpty.disabled = true;
+                }
+                delete window.__timelineExport;
                 emptyState.classList.remove('hidden');
                 document.getElementById('displayStart').innerText = "--:--";
                 return;
@@ -246,13 +483,20 @@
 
             roster.forEach(item => {
                 if (item.type === 'person') {
-                    const duration = (item.role === 'Bride') ? 90 : 60;
                     if (item.hair) {
-                        const entry = { label: `${item.role} Hair`, duration, isBride: item.role === 'Bride' };
+                        const dur = item.role === 'Bride'
+                            ? (item.hairMinutes ?? 90)
+                            : clampPartyHairMinutes(item.hairMinutes ?? 60);
+                        const labelBase = scheduleBaseLabel(item);
+                        const entry = { label: `${labelBase} Hair`, duration: dur, isBride: item.role === 'Bride' };
                         if (item.role === 'Bride') hairBride.push(entry); else hairParty.push(entry);
                     }
                     if (item.makeup) {
-                        const entry = { label: `${item.role} Makeup`, duration, isBride: item.role === 'Bride' };
+                        const dur = item.role === 'Bride'
+                            ? (item.makeupMinutes ?? 90)
+                            : clampPartyMakeupMinutes(item.makeupMinutes ?? 60);
+                        const labelBase = scheduleBaseLabel(item);
+                        const entry = { label: `${labelBase} Makeup`, duration: dur, isBride: item.role === 'Bride' };
                         if (item.role === 'Bride') makeupBride.push(entry); else makeupParty.push(entry);
                     }
                 } else {
@@ -264,14 +508,19 @@
 
             document.getElementById('serviceCount').innerText = `${hairBride.length + hairParty.length + hairTouchups.length + makeupBride.length + makeupParty.length + makeupTouchups.length} Services`;
 
+            const brideHairTotalMin = hairBride.reduce((s, e) => s + e.duration, 0);
+            const brideMakeupTotalMin = makeupBride.reduce((s, e) => s + e.duration, 0);
+            const brideHairBlockMin = hairBride[0]?.duration ?? 0;
+            const brideMakeupBlockMin = makeupBride[0]?.duration ?? 0;
+
             const hairStations = Array.from({ length: hairArtistsCount }, (_, i) => ({ 
-                workload: (i === 0 && hairBride.length > 0) ? 90 : 0, 
+                workload: (i === 0 && hairBride.length > 0) ? brideHairTotalMin : 0, 
                 items: [], 
                 touchups: [], 
                 isLead: i === 0 
             }));
             const makeupStations = Array.from({ length: makeupArtistsCount }, (_, i) => ({ 
-                workload: (i === 0 && makeupBride.length > 0) ? 90 : 0, 
+                workload: (i === 0 && makeupBride.length > 0) ? brideMakeupTotalMin : 0, 
                 items: [], 
                 touchups: [] , 
                 isLead: i === 0 
@@ -308,53 +557,345 @@
             const hasBrideHair = hairBride.length > 0;
             const hasBrideMakeup = makeupBride.length > 0;
 
-            const leadHairTotal = (hasBrideHair ? 90 : 0) + getLeadPartyMinutes(hairStations);
-            const leadMakeupTotal = (hasBrideMakeup ? 90 : 0) + getLeadPartyMinutes(makeupStations);
+            const brideScheduleRow = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            const brideNameDisplay = brideScheduleRow?.personName && String(brideScheduleRow.personName).trim();
+
+            const leadHairTotal = (hasBrideHair ? brideHairTotalMin : 0) + getLeadPartyMinutes(hairStations);
+            const leadMakeupTotal = (hasBrideMakeup ? brideMakeupTotalMin : 0) + getLeadPartyMinutes(makeupStations);
             
             const leadMaxSpan = Math.max(leadHairTotal, leadMakeupTotal);
             const leadStartTime = new Date(readyDate.getTime() - (leadMaxSpan * 60000));
+            const baselineLeadMs = leadStartTime.getTime();
+            const readyMs = readyDate.getTime();
+            const STEP_MS = 15 * 60000;
+            const LOOKBACK_MS = 12 * 3600000;
 
-            let teamEarliestArrival = new Date(leadStartTime.getTime());
+            const leadPartyHairDur = hairStations.find(s => s.isLead).items.reduce((a, i) => a + i.duration, 0);
+            const leadPartyMakeupDur = makeupStations.find(s => s.isLead).items.reduce((a, i) => a + i.duration, 0);
+
+            let hairSlots = [];
+            let makeupSlots = [];
+            let brideHairChosenMs = baselineLeadMs;
+            let brideMakeupStartMs = readyMs - brideMakeupBlockMin * 60000;
+
+            const hairCombinedMin = brideHairBlockMin + leadPartyHairDur;
+            const hairLatestMsRaw = readyMs - hairCombinedMin * 60000;
+            const hairLatestDate = new Date(Math.floor(Math.max(0, hairLatestMsRaw) / STEP_MS) * STEP_MS);
+            const hairWindowMaxMs = Math.min(baselineLeadMs, hairLatestMsRaw);
+            let hairEarliestDate = new Date(Math.max(Math.min(hairWindowMaxMs, hairLatestMsRaw) - LOOKBACK_MS, Math.min(hairLatestMsRaw, readyMs - 24 * 3600000)));
+            if (hairEarliestDate.getTime() > hairLatestDate.getTime()) hairEarliestDate = hairLatestDate;
+
+            let makeupLeadStartMs = baselineLeadMs;
+
+            if (hasBrideHair && hairCombinedMin >= 0) {
+                hairSlots = buildSlotsInclusive(readyDate, hairCombinedMin, hairEarliestDate, hairLatestDate);
+                if (hairSlots.length === 0) hairSlots.push(new Date(Math.floor(Math.max(0, hairLatestMsRaw) / STEP_MS) * STEP_MS));
+                const hairPref = (brideScheduleRow && brideScheduleRow.brideHairSlotHHMM) || hhmmLocal(leadStartTime);
+                const hairPick = closestTimeInSlotList(readyDate, hairSlots, hairPref) || hairSlots[hairSlots.length - 1];
+                brideHairChosenMs = hairPick.getTime();
+                if (brideScheduleRow) brideScheduleRow.brideHairSlotHHMM = hhmmLocal(hairPick);
+            }
+
+            makeupLeadStartMs = Math.min(baselineLeadMs, hasBrideHair ? brideHairChosenMs : baselineLeadMs);
+            const makeupEarliestPartyEndMs = makeupLeadStartMs + leadPartyMakeupDur * 60000;
+
+            const mkLatestMsRaw = readyMs - brideMakeupBlockMin * 60000;
+            const mkLatestDate = new Date(Math.floor(mkLatestMsRaw / STEP_MS) * STEP_MS);
+            // Mirror hair's sliding lookback window so the bridal makeup picker isn't overly narrow,
+            // while still forbidding starts before lead party makeup has finished on the timeline.
+            const mkWindowMaxMs = Math.min(baselineLeadMs, mkLatestMsRaw);
+            const makeupLookbackFloorMs = Math.max(
+                Math.min(mkWindowMaxMs, mkLatestMsRaw) - LOOKBACK_MS,
+                Math.min(mkLatestMsRaw, readyMs - 24 * 3600000)
+            );
+            const partyFloorSnappedMs = Math.ceil(makeupEarliestPartyEndMs / STEP_MS) * STEP_MS;
+            let makeupSlotsEarliestDate = new Date(Math.max(makeupLookbackFloorMs, partyFloorSnappedMs));
+            if (makeupSlotsEarliestDate.getTime() > mkLatestDate.getTime()) makeupSlotsEarliestDate = mkLatestDate;
+
+            if (hasBrideMakeup && brideMakeupBlockMin > 0) {
+                makeupSlots = buildSlotsInclusive(readyDate, brideMakeupBlockMin, makeupSlotsEarliestDate,
+                    mkLatestDate.getTime() >= makeupSlotsEarliestDate.getTime() ? mkLatestDate : makeupSlotsEarliestDate);
+                if (makeupSlots.length === 0) {
+                    makeupSlots.push(new Date(Math.floor(Math.min(Math.max(mkLatestMsRaw, makeupEarliestPartyEndMs), mkLatestMsRaw) / STEP_MS) * STEP_MS));
+                }
+                const mkPref = (brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM) || hhmmLocal(new Date(mkLatestMsRaw));
+                const mkPick = closestTimeInSlotList(readyDate, makeupSlots, mkPref) || makeupSlots[makeupSlots.length - 1];
+                brideMakeupStartMs = mkPick.getTime();
+                if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(mkPick);
+            }
+
+            const slotAdjustmentMessages = [];
+            const STEP_MIN = STEP_MS / 60000;
+            const makeupLatestSnapMs = Math.floor(Math.max(0, readyMs - brideMakeupBlockMin * 60000) / STEP_MS) * STEP_MS;
+
+            let hairLeadEffectiveMs = hasBrideHair ? brideHairChosenMs : baselineLeadMs;
+            let mkLeadEffectiveMs = makeupLeadStartMs;
+            let brHairMs = brideHairChosenMs;
+            let brMkMs = brideMakeupStartMs;
+
+            for (let clashIter = 0; clashIter < 8; clashIter++) {
+                mkLeadEffectiveMs = Math.min(baselineLeadMs, hasBrideHair ? brHairMs : baselineLeadMs);
+                hairLeadEffectiveMs = hasBrideHair ? brHairMs : baselineLeadMs;
+
+                let changed = false;
+                const partyMkEndMsCalc = mkLeadEffectiveMs + leadPartyMakeupDur * 60000;
+
+                const brHairEndMs = brHairMs + brideHairBlockMin * 60000;
+                const brMkEndMs = brMkMs + brideMakeupBlockMin * 60000;
+
+                if (hasBrideMakeup && brMkMs + 250 < partyMkEndMsCalc) {
+                    const needStart = Math.ceil(partyMkEndMsCalc / STEP_MS) * STEP_MS;
+                    const slotsFix = buildSlotsInclusive(readyDate, brideMakeupBlockMin, new Date(needStart), new Date(Math.max(needStart, makeupLatestSnapMs)), STEP_MIN);
+                    const oldT = formatTime(new Date(brMkMs));
+                    const pick = closestTimeInSlotList(readyDate, slotsFix, brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM)
+                        || (slotsFix[0] || null);
+                    if (pick) {
+                        brMkMs = pick.getTime();
+                        if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pick);
+                        slotAdjustmentMessages.push(`Bridal makeup overlapped bridal party makeup on the lead schedule (started ${oldT}). Auto-adjusted makeup start to ${formatTime(pick)}.`);
+                        changed = true;
+                    } else {
+                        slotAdjustmentMessages.push('Bridal makeup would overlap lead party makeup, but no valid slot fits before Ready by — shorten party makeup or extend Ready by time.');
+                    }
+                }
+
+                let mkPartyEndRedo = mkLeadEffectiveMs + leadPartyMakeupDur * 60000;
+
+                const hairMkOverlap = hasBrideHair && hasBrideMakeup
+                    && intervalsOverlapMs(brHairMs, brHairEndMs, brMkMs, brMkEndMs);
+                if (hairMkOverlap) {
+                    const needMkEarliest = Math.max(
+                        Math.ceil(mkPartyEndRedo / STEP_MS) * STEP_MS,
+                        Math.ceil(brHairEndMs / STEP_MS) * STEP_MS
+                    );
+                    const mkSlotsOv = buildSlotsInclusive(readyDate, brideMakeupBlockMin,
+                        new Date(needMkEarliest), new Date(Math.max(needMkEarliest, makeupLatestSnapMs)), STEP_MIN);
+
+                    let pick = closestTimeInSlotList(readyDate, mkSlotsOv, brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM)
+                        || (mkSlotsOv[0] || null);
+
+                    if (pick && pick.getTime() >= needMkEarliest - 250 && pick.getTime() + brideMakeupBlockMin * 60000 <= readyMs + 599) {
+                        const oldHair = formatTime(new Date(brHairMs));
+                        const oldMk = formatTime(new Date(brMkMs));
+                        brMkMs = pick.getTime();
+                        if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pick);
+                        slotAdjustmentMessages.push(`The bride was double-booked for hair (${oldHair}) and makeup (${oldMk}). Auto-set makeup after hair ends (${formatTime(pick)}–${formatTime(new Date(brMkMs + brideMakeupBlockMin * 60000))}).`);
+                        changed = true;
+                    } else {
+                        const latestHairStartAllow = Math.min(hairLatestMsRaw, Math.max(0, brMkMs - brideHairBlockMin * 60000));
+                        const hairLt = new Date(Math.floor(latestHairStartAllow / STEP_MS) * STEP_MS);
+                        const hairOv = hairCombinedMin >= 0 ? buildSlotsInclusive(
+                            readyDate,
+                            hairCombinedMin,
+                            hairEarliestDate,
+                            hairLt.getTime() >= hairEarliestDate.getTime() ? hairLt : hairEarliestDate,
+                            STEP_MIN
+                        ) : [];
+
+                        const hairPick2 = closestTimeInSlotList(readyDate, hairOv, brideScheduleRow && brideScheduleRow.brideHairSlotHHMM)
+                            || hairOv[hairOv.length - 1];
+
+                        if (hairPick2) {
+                            const oldHairTime = formatTime(new Date(brHairMs));
+                            brHairMs = hairPick2.getTime();
+                            if (brideScheduleRow) brideScheduleRow.brideHairSlotHHMM = hhmmLocal(hairPick2);
+                            mkLeadEffectiveMs = Math.min(baselineLeadMs, brHairMs);
+                            mkPartyEndRedo = mkLeadEffectiveMs + leadPartyMakeupDur * 60000;
+                            const mkNeedAfterHair = Math.max(
+                                Math.ceil(mkPartyEndRedo / STEP_MS) * STEP_MS,
+                                Math.ceil((brHairMs + brideHairBlockMin * 60000) / STEP_MS) * STEP_MS
+                            );
+                            const mkSlots2 = buildSlotsInclusive(
+                                readyDate,
+                                brideMakeupBlockMin,
+                                new Date(mkNeedAfterHair),
+                                new Date(Math.max(mkNeedAfterHair, makeupLatestSnapMs)),
+                                STEP_MIN
+                            );
+                            pick = closestTimeInSlotList(readyDate, mkSlots2, brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM) || mkSlots2[mkSlots2.length - 1];
+                            if (pick) {
+                                brMkMs = pick.getTime();
+                                if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pick);
+                                slotAdjustmentMessages.push(`Bridal hair and makeup overlapped. Moved bridal hair from ${oldHairTime} to ${formatTime(hairPick2)}, then set makeup so it starts after hair.`);
+                                changed = true;
+                            }
+                        }
+
+                        if (!changed) {
+                            slotAdjustmentMessages.push(`The bride’s hair (${formatTime(new Date(brHairMs))}–${formatTime(new Date(brHairEndMs))}) overlaps makeup (${formatTime(new Date(brMkMs))}–${formatTime(new Date(brMkEndMs))}) and no Auto-fix fits — adjust Ready by, durations, or roster.`);
+                        }
+                    }
+                }
+
+                if (!changed) break;
+            }
+
+            brideHairChosenMs = brHairMs;
+            brideMakeupStartMs = brMkMs;
+            makeupLeadStartMs = Math.min(baselineLeadMs, hasBrideHair ? brideHairChosenMs : baselineLeadMs);
+            const hairLeadStartMs = hasBrideHair ? brideHairChosenMs : baselineLeadMs;
+
+            const brideCtlWrap = document.getElementById('brideSlotControlsWrap');
+            const slotAlerts = Array.from(new Set(slotAdjustmentMessages));
+
+            const SCHED_EPS = 2;
+            let brideHairTimingOK = true;
+            let brideMakeupTimingOK = true;
+            if (brideScheduleRow && (hasBrideHair || hasBrideMakeup)) {
+                const hEndMs = hasBrideHair ? brideHairChosenMs + brideHairBlockMin * 60000 : 0;
+                const mEndMs = hasBrideMakeup ? brideMakeupStartMs + brideMakeupBlockMin * 60000 : 0;
+                const bridalOverlap = hasBrideHair && hasBrideMakeup
+                    && intervalsOverlapMs(brideHairChosenMs, hEndMs, brideMakeupStartMs, mEndMs);
+
+                if (hasBrideHair) {
+                    brideHairTimingOK = hEndMs <= readyMs + SCHED_EPS && !bridalOverlap;
+                }
+                if (hasBrideMakeup) {
+                    const makeupPartyConflict = leadPartyMakeupDur > 0
+                        && brideMakeupStartMs + SCHED_EPS < makeupLeadStartMs + leadPartyMakeupDur * 60000;
+                    brideMakeupTimingOK = mEndMs <= readyMs + SCHED_EPS && !makeupPartyConflict && !bridalOverlap;
+                }
+            }
+
+            let hairOpts = '';
+            let makeupOpts = '';
+            const showBrideTimelineSlots = !!(brideScheduleRow && (hasBrideHair || hasBrideMakeup));
+            if (showBrideTimelineSlots) {
+                let hairSlotsForUi = hasBrideHair ? hairSlots.slice() : [];
+                const chH = hasBrideHair ? hhmmLocal(new Date(brideHairChosenMs)) : '';
+                if (hasBrideHair && chH && !hairSlotsForUi.some(dt => hhmmLocal(dt) === chH)) {
+                    hairSlotsForUi.push(new Date(Math.floor(brideHairChosenMs / STEP_MS) * STEP_MS));
+                    hairSlotsForUi.sort((a, b) => a.getTime() - b.getTime());
+                }
+                let makeupSlotsForUi = hasBrideMakeup ? makeupSlots.slice() : [];
+                const chM = hasBrideMakeup ? hhmmLocal(new Date(brideMakeupStartMs)) : '';
+                if (hasBrideMakeup && chM && !makeupSlotsForUi.some(dt => hhmmLocal(dt) === chM)) {
+                    makeupSlotsForUi.push(new Date(Math.floor(brideMakeupStartMs / STEP_MS) * STEP_MS));
+                    makeupSlotsForUi.sort((a, b) => a.getTime() - b.getTime());
+                }
+
+                hairOpts = hasBrideHair && hairSlotsForUi.length
+                    ? hairSlotsForUi.map(dt => `<option value="${escapeHtml(hhmmLocal(dt))}"${hhmmLocal(dt) === (brideScheduleRow.brideHairSlotHHMM || '') ? ' selected' : ''}>${escapeHtml(formatTime(dt))}${escapeHtml(` → ${formatTime(new Date(dt.getTime() + brideHairBlockMin * 60000))}`)}</option>`).join('')
+                    : '';
+                makeupOpts = hasBrideMakeup && makeupSlotsForUi.length
+                    ? makeupSlotsForUi.map(dt => `<option value="${escapeHtml(hhmmLocal(dt))}"${hhmmLocal(dt) === (brideScheduleRow.brideMakeupSlotHHMM || '') ? ' selected' : ''}>${escapeHtml(formatTime(dt))}${escapeHtml(` → ${formatTime(new Date(dt.getTime() + brideMakeupBlockMin * 60000))}`)}</option>`).join('')
+                    : '';
+            }
+
+            const selBdHair = brideHairTimingOK
+                ? 'border-slate-200 focus:border-slate-400 focus:ring-slate-400'
+                : 'border-rose-500 focus:border-rose-500 focus:ring-rose-400';
+            const selBdMakeup = brideMakeupTimingOK
+                ? 'border-slate-200 focus:border-slate-400 focus:ring-slate-400'
+                : 'border-rose-500 focus:border-rose-500 focus:ring-rose-400';
+
+            const brideConflictXSvg = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg>';
+
+            if (brideCtlWrap) {
+                const hasAlerts = slotAlerts.length > 0;
+                brideCtlWrap.classList.toggle('hidden', !hasAlerts);
+                brideCtlWrap.classList.toggle('mb-5', hasAlerts);
+                brideCtlWrap.innerHTML = hasAlerts
+                    ? `<div role="alert" class="rounded-lg border border-amber-500/70 bg-amber-50 px-3 py-2.5 shadow-sm">${slotAlerts.map(msg => `<p class="text-[11px] font-semibold text-amber-950 leading-snug mb-1.5 last:mb-0">${escapeHtml(msg)}</p>`).join('')}</div>`
+                    : '';
+            }
+
+            let teamEarliestArrival = new Date(Math.min(makeupLeadStartMs, hairLeadStartMs));
 
             rosterContainer.innerHTML = roster.map(p => {
                 const isBride = p.role === 'Bride';
+                const isParty = isPartyMemberRow(p);
+                const partyHairM = clampPartyHairMinutes(p.hairMinutes ?? 60);
+                const partyMakeupM = clampPartyMakeupMinutes(p.makeupMinutes ?? 60);
+                const nameFieldId = `nm-${String(p.id).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
                 return `
-                    <div class="p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-slate-300 transition-colors flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full ${isBride ? 'bg-rose-600' : 'bg-slate-900'} flex items-center justify-center text-[9px] font-bold text-white shadow-md">
+                    <div class="p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-slate-300 transition-colors flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
+                        <div class="flex items-start gap-3 min-w-0 w-full sm:flex-1 sm:min-w-[18rem]">
+                            <div class="w-8 h-8 shrink-0 rounded-full ${isBride ? 'bg-rose-600' : 'bg-slate-900'} flex items-center justify-center text-[9px] font-bold text-white shadow-md">
                                 ${isBride ? 'BR' : (p.type === 'touchup' ? 'TU' : 'BP')}
                             </div>
-                            <span class="text-sm font-bold text-slate-800">${p.role}</span>
+                            <div class="min-w-0 flex-1 flex flex-col gap-1 items-stretch max-w-full">
+                                <span class="text-sm font-bold text-slate-800 leading-tight">${escapeHtml(p.role)}</span>
+                                ${p.type === 'person' && (isBride || isParty) ? `
+                                    <label for="${nameFieldId}" class="sr-only">Display name</label>
+                                    <input type="text" id="${nameFieldId}" autocomplete="name"
+                                        class="w-full max-w-full min-h-[2rem] text-xs py-1.5 px-2.5 border border-slate-200 rounded-md text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none box-border"
+                                        placeholder="Name (optional)"
+                                        value="${escapeHtml(p.personName != null ? String(p.personName) : '')}"
+                                        onchange="updatePersonName(${p.id}, this.value)">
+                                ` : ''}
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-2">
+                        <div class="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap justify-start sm:justify-end">
                             ${p.type === 'person' ? `
-                                <div class="flex space-x-1">
+                                <div class="flex flex-wrap items-center gap-1">
                                     <input type="checkbox" id="h-${p.id}" class="hidden service-checkbox" ${p.hair ? 'checked' : ''} onchange="toggleService(${p.id}, 'hair')">
                                     <label for="h-${p.id}" class="px-2 py-1 border rounded text-[9px] font-bold uppercase cursor-pointer border-gray-100 text-slate-400 bg-slate-50">Hair</label>
+                                    ${isBride && p.hair ? `
+                                        <select class="px-1.5 py-1 border border-slate-200 rounded text-[9px] font-bold text-slate-700 bg-white max-w-[4.5rem]" onchange="setBrideHairMinutes(parseInt(this.value, 10))" aria-label="Bride hair duration">
+                                            <option value="60" ${(p.hairMinutes ?? 90) === 60 ? 'selected' : ''}>60m</option>
+                                            <option value="90" ${(p.hairMinutes ?? 90) === 90 ? 'selected' : ''}>90m</option>
+                                        </select>
+                                    ` : ''}
+                                    ${isParty && p.hair ? `
+                                        <select class="px-1.5 py-1 border border-slate-200 rounded text-[9px] font-bold text-slate-700 bg-white max-w-[4.5rem]" onchange="setPartyHairMinutes(${p.id}, parseInt(this.value, 10))" aria-label="Bridal party hair duration">
+                                            <option value="45" ${partyHairM === 45 ? 'selected' : ''}>45m</option>
+                                            <option value="60" ${partyHairM === 60 ? 'selected' : ''}>60m</option>
+                                        </select>
+                                    ` : ''}
                                     <input type="checkbox" id="m-${p.id}" class="hidden service-checkbox" ${p.makeup ? 'checked' : ''} onchange="toggleService(${p.id}, 'makeup')">
                                     <label for="m-${p.id}" class="px-2 py-1 border rounded text-[9px] font-bold uppercase cursor-pointer border-gray-100 text-slate-400 bg-slate-50">Makeup</label>
+                                    ${isBride && p.makeup ? `
+                                        <select class="px-1.5 py-1 border border-slate-200 rounded text-[9px] font-bold text-slate-700 bg-white max-w-[4.5rem]" onchange="setBrideMakeupMinutes(parseInt(this.value, 10))" aria-label="Bride makeup duration">
+                                            <option value="60" ${(p.makeupMinutes ?? 90) === 60 ? 'selected' : ''}>60m</option>
+                                            <option value="90" ${(p.makeupMinutes ?? 90) === 90 ? 'selected' : ''}>90m</option>
+                                        </select>
+                                    ` : ''}
+                                    ${isParty && p.makeup ? `
+                                        <select class="px-1.5 py-1 border border-slate-200 rounded text-[9px] font-bold text-slate-700 bg-white max-w-[4.5rem]" onchange="setPartyMakeupMinutes(${p.id}, parseInt(this.value, 10))" aria-label="Bridal party makeup duration">
+                                            <option value="45" ${partyMakeupM === 45 ? 'selected' : ''}>45m</option>
+                                            <option value="60" ${partyMakeupM === 60 ? 'selected' : ''}>60m</option>
+                                        </select>
+                                    ` : ''}
                                 </div>
                             ` : `
-                                <button onclick="toggleTouchUpCat(${p.id})" class="px-2 py-1 bg-white border border-rose-200 rounded text-[9px] font-bold text-rose-600 uppercase transition-colors hover:bg-rose-100">${p.category}</button>
+                                <button onclick="toggleTouchUpCat(${p.id})" class="px-2 py-1 bg-white border border-rose-200 rounded text-[9px] font-bold text-rose-600 uppercase transition-colors hover:bg-rose-100">${escapeHtml(p.category)}</button>
                                 <input type="number" value="${p.hours}" class="w-10 py-1 border border-rose-200 rounded text-center text-xs font-bold text-rose-700 bg-white" onchange="updateTouchUpHours(${p.id}, this.value)">
                             `}
-                            <button onclick="removePerson(${p.id})" class="text-slate-200 hover:text-rose-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" /></svg></button>
+                            <button type="button" onclick="removePerson(${p.id})" class="shrink-0 w-7 h-7 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm hover:border-rose-400 hover:bg-rose-50 hover:text-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-1 transition" aria-label="Remove from roster" title="Remove">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                            </button>
                         </div>
                     </div>
                 `;
             }).join('');
 
             let timelinesHTML = '';
+            const scheduleExportRows = [];
             const processStation = (station, type, index) => {
                 const isLead = station.isLead;
                 const stationPartyTotal = station.items.reduce((sum, i) => sum + i.duration, 0);
                 const stationTouchupTotal = station.touchups.reduce((sum, i) => sum + i.duration, 0);
 
                 let startTime;
-                if (isLead) startTime = new Date(leadStartTime.getTime());
+                if (isLead && type === 'Hair') startTime = new Date(hairLeadStartMs);
+                else if (isLead && type === 'Makeup') startTime = new Date(makeupLeadStartMs);
                 else startTime = new Date(readyDate.getTime() - ((stationPartyTotal + stationTouchupTotal) * 60000));
 
                 if (startTime < teamEarliestArrival) teamEarliestArrival = startTime;
+
+                const pushExport = (rowType, title, startD, endD, durationMin) => {
+                    scheduleExportRows.push([
+                        rowType,
+                        type,
+                        String(index + 1),
+                        isLead ? 'Lead' : 'Support',
+                        title,
+                        formatTime(startD),
+                        formatTime(endD),
+                        durationMin === '' || durationMin == null ? '' : String(durationMin)
+                    ]);
+                };
 
                 let html = `<div>
                     <h3 class="flex items-center text-sm font-bold uppercase tracking-widest ${isLead ? 'text-slate-900' : 'text-slate-400'} mb-3">
@@ -368,21 +909,46 @@
 
                 if (type === 'Hair' && isLead && hasBrideHair) {
                     const brideStart = new Date(currentTime.getTime());
-                    const brideEnd = new Date(brideStart.getTime() + (90 * 60000));
+                    const brideEnd = new Date(brideStart.getTime() + (brideHairBlockMin * 60000));
+                    const brideHairTitle = brideNameDisplay
+                        ? `${brideNameDisplay} · BRIDE · Hair`
+                        : 'THE BRIDE (Hair)';
+                    pushExport('Appointment', brideHairTitle, brideStart, brideEnd, brideHairBlockMin);
+                    const hairWarn = !brideHairTimingOK
+                        ? `<span class="shrink-0 text-rose-600" role="img" aria-label="Timing conflict" title="Ends after Ready by or overlaps bridal makeup">${brideConflictXSvg}</span>`
+                        : '<span class="w-4 shrink-0" aria-hidden="true"></span>';
                     html += `
-                        <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50 border border-rose-100 shadow-md border-l-4 border-rose-600">
-                            <div><div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Hair)</div></div>
-                            <div class="text-right text-[11px] font-black text-rose-600">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
-                        </div>
+                        <details class="bride-slot-adj rounded-lg bg-rose-50 shadow-md border-l-4 border-rose-600 ${brideHairTimingOK ? 'border border-rose-100' : 'border border-rose-400 ring-2 ring-rose-300/80'}" ${!brideHairTimingOK ? 'open' : ''}>
+                            <summary class="flex cursor-pointer items-center gap-2 p-3 text-left rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2">
+                                <span class="sr-only">Show or hide bridal hair start time adjuster.</span>
+                                <div class="min-w-0 flex-1">
+                                    ${brideNameDisplay
+                                        ? `<div class="text-[11px] font-black text-rose-900 normal-case tracking-tight">${escapeHtml(brideNameDisplay)} · BRIDE · Hair</div>`
+                                        : `<div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Hair)</div>`}
+                                    <div class="text-[9px] font-semibold uppercase tracking-wide text-rose-500/90 mt-0.5">Tap to adjust start</div>
+                                </div>
+                                <div class="text-right text-[11px] font-black text-rose-600 shrink-0">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
+                                ${hairWarn}
+                                <svg class="bride-slot-chevron h-4 w-4 shrink-0 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                            </summary>
+                            <div class="border-t border-rose-200/70 px-3 pb-3 pt-3">
+                                <label class="block">
+                                    <span class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Hair start</span>
+                                    <select class="w-full rounded-lg px-2 py-2 text-xs font-semibold bg-white outline-none ring-2 ring-transparent ${selBdHair}" onchange="setBrideHairSlotHHMM(this.value)">${hairOpts || '<option value="">No valid slots</option>'}</select>
+                                    <span class="text-[9px] text-slate-600 mt-1.5 block">${escapeHtml(`Ready by ${formatTime(readyDate)} · Hair ends ${formatTime(new Date(Math.min(brideHairChosenMs + brideHairBlockMin * 60000, readyMs)))}`)}</span>
+                                </label>
+                            </div>
+                        </details>
                     `;
                     currentTime = brideEnd;
                 }
 
                 station.items.forEach(item => {
                     const itemEnd = new Date(currentTime.getTime() + (item.duration * 60000));
+                    pushExport(item.isTouchup ? 'Touch-up' : 'Appointment', item.label, currentTime, itemEnd, item.duration);
                     html += `
                         <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100 shadow-sm border-l-4 border-slate-300">
-                            <div><div class="text-[11px] font-bold text-slate-700 uppercase">${item.label}</div></div>
+                            <div><div class="text-[11px] font-bold text-slate-700 normal-case tracking-tight">${escapeHtml(item.label)}</div></div>
                             <div class="text-right text-[11px] font-extrabold text-slate-900">${formatTime(currentTime)} - ${formatTime(itemEnd)}</div>
                         </div>
                     `;
@@ -390,25 +956,52 @@
                 });
 
                 if (type === 'Makeup' && isLead && hasBrideMakeup) {
-                    const brideStart = new Date(readyDate.getTime() - (90 * 60000));
-                    const brideEnd = new Date(readyDate.getTime());
+                    const brideStart = new Date(brideMakeupStartMs);
+                    const brideEnd = new Date(brideMakeupStartMs + brideMakeupBlockMin * 60000);
                     if (brideStart > currentTime) {
                         html += `<div class="py-1 text-center text-[9px] text-slate-300 font-bold uppercase tracking-widest border-y border-dashed border-slate-100 my-1">Transitional Gap</div>`;
+                        pushExport('Gap', 'Transitional gap', currentTime, brideStart,
+                            Math.round((brideStart.getTime() - currentTime.getTime()) / 60000));
                     }
+                    const brideMakeupTitle = brideNameDisplay
+                        ? `${brideNameDisplay} · BRIDE · Makeup`
+                        : 'THE BRIDE (Makeup)';
+                    pushExport('Appointment', brideMakeupTitle, brideStart, brideEnd, brideMakeupBlockMin);
+                    const mkWarn = !brideMakeupTimingOK
+                        ? `<span class="shrink-0 text-rose-600" role="img" aria-label="Timing conflict" title="Conflicts with Ready by, lead party makeup, or overlaps hair">${brideConflictXSvg}</span>`
+                        : '<span class="w-4 shrink-0" aria-hidden="true"></span>';
                     html += `
-                        <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50 border border-rose-100 shadow-md border-l-4 border-rose-600">
-                            <div><div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Makeup)</div></div>
-                            <div class="text-right text-[11px] font-black text-rose-600">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
-                        </div>
+                        <details class="bride-slot-adj rounded-lg bg-rose-50 shadow-md border-l-4 border-rose-600 ${brideMakeupTimingOK ? 'border border-rose-100' : 'border border-rose-400 ring-2 ring-rose-300/80'}" ${!brideMakeupTimingOK ? 'open' : ''}>
+                            <summary class="flex cursor-pointer items-center gap-2 p-3 text-left rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2">
+                                <span class="sr-only">Show or hide bridal makeup start time adjuster.</span>
+                                <div class="min-w-0 flex-1">
+                                    ${brideNameDisplay
+                                        ? `<div class="text-[11px] font-black text-rose-900 normal-case tracking-tight">${escapeHtml(brideNameDisplay)} · BRIDE · Makeup</div>`
+                                        : `<div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Makeup)</div>`}
+                                    <div class="text-[9px] font-semibold uppercase tracking-wide text-rose-500/90 mt-0.5">Tap to adjust start</div>
+                                </div>
+                                <div class="text-right text-[11px] font-black text-rose-600 shrink-0">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
+                                ${mkWarn}
+                                <svg class="bride-slot-chevron h-4 w-4 shrink-0 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                            </summary>
+                            <div class="border-t border-rose-200/70 px-3 pb-3 pt-3">
+                                <label class="block">
+                                    <span class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Makeup start</span>
+                                    <select class="w-full rounded-lg px-2 py-2 text-xs font-semibold bg-white outline-none ring-2 ring-transparent ${selBdMakeup}" onchange="setBrideMakeupSlotHHMM(this.value)">${makeupOpts || '<option value="">No valid slots</option>'}</select>
+                                    <span class="text-[9px] text-slate-600 mt-1.5 block">${escapeHtml(`Ready by ${formatTime(readyDate)} · Makeup ends ${formatTime(new Date(Math.min(brideMakeupStartMs + brideMakeupBlockMin * 60000, readyMs)))}`)}</span>
+                                </label>
+                            </div>
+                        </details>
                     `;
                     currentTime = brideEnd;
                 }
 
                 station.touchups.forEach(item => {
                     const itemEnd = new Date(currentTime.getTime() + (item.duration * 60000));
+                    pushExport('Touch-up', item.label, currentTime, itemEnd, item.duration);
                     html += `
                         <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50/50 border border-rose-100 border-l-4 border-rose-400 italic">
-                            <div><div class="text-[11px] font-bold text-rose-800 uppercase">${item.label}</div></div>
+                            <div><div class="text-[11px] font-bold text-rose-800 normal-case tracking-tight">${escapeHtml(item.label)}</div></div>
                             <div class="text-right text-[11px] font-bold text-rose-600">${formatTime(currentTime)} - ${formatTime(itemEnd)}</div>
                         </div>
                     `;
@@ -427,6 +1020,21 @@
 
             timelineContainer.innerHTML = timelinesHTML;
             document.getElementById('displayStart').innerText = formatTime(teamEarliestArrival);
+
+            const dayTag = `${readyDate.getFullYear()}-${String(readyDate.getMonth() + 1).padStart(2, '0')}-${String(readyDate.getDate()).padStart(2, '0')}`;
+            window.__timelineExport = {
+                filename: `Master_Schedule_${dayTag}.csv`,
+                summary: [
+                    ['Summary', '', '', '', 'Earliest team arrival', formatTime(teamEarliestArrival), '', ''],
+                    ['Summary', '', '', '', 'Ready by', formatTime(readyDate), '', ''],
+                    ['Summary', '', '', '', 'Hair artists', String(hairArtistsCount), '', ''],
+                    ['Summary', '', '', '', 'Makeup artists', String(makeupArtistsCount), '', ''],
+                    ['Summary', '', '', '', 'Generated', new Date().toLocaleString(), '', '']
+                ],
+                rows: scheduleExportRows
+            };
+            const exportBtn = document.getElementById('exportSheetsBtn');
+            if (exportBtn) exportBtn.disabled = scheduleExportRows.length === 0;
         }
 
         window.onload = calculate;
