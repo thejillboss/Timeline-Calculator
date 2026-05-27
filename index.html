@@ -36,11 +36,287 @@
         details.bride-slot-adj[open] .bride-slot-chevron {
             transform: rotate(180deg);
         }
+        .tl-twelve-hr {
+            --tl-v-height: min(74vh, 38rem);
+        }
+        .tl-shell {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            width: max-content;
+            padding: 0.85rem;
+            border-radius: 0.75rem;
+            background: rgb(248 250 252);
+            border: 1px solid rgb(226 232 240);
+            box-sizing: border-box;
+        }
+        .tl-time-rail {
+            overflow: visible;
+            box-sizing: border-box;
+        }
+        .tl-time-rail > .tl-schedule-pane {
+            left: 0.3rem;
+            right: 0.3rem;
+        }
+        .tl-schedule-pane {
+            position: absolute;
+            left: 0.5rem;
+            right: 0.5rem;
+            top: 0.85rem;
+            bottom: 1.15rem;
+            z-index: 0;
+        }
+        .tl-station-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.55rem 0.58rem 0.65rem;
+            border-radius: 0.625rem;
+            background: rgb(255 255 255);
+            border: 1px solid rgb(226 232 240);
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            box-sizing: border-box;
+        }
+        /** Matches HAIR/MU column headings so grid tracks share the same vertical origin as the left time rail */
+        .tl-station-heading-row {
+            box-sizing: border-box;
+            min-height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        @media (min-width: 640px) {
+            .tl-station-heading-row {
+                min-height: 2.625rem;
+            }
+        }
+        .tl-time-rail-outer {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            /* Same vertical padding + gap rhythm as `.tl-station-card` */
+            padding: 0.55rem 0.58rem 0.65rem;
+        }
+        .tl-columns-row {
+            display: flex;
+            flex: 1 1 auto;
+            flex-wrap: nowrap;
+            gap: 1.125rem;
+            min-width: min-content;
+            overflow-x: visible;
+            overflow-y: visible;
+            padding-bottom: 0.6rem;
+        }
+        .tl-track-v {
+            height: var(--tl-v-height);
+            min-height: var(--tl-v-height);
+            box-sizing: border-box;
+            background: linear-gradient(to bottom, rgb(248 250 252) 0%, rgb(241 245 249) 100%);
+        }
+        .tl-track {
+            position: relative;
+        }
+        .tl-track-station-inner {
+            border-radius: 0.45rem;
+            border: 1px solid rgb(226 232 240 / 0.92);
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .tl-tick-h {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgb(148 163 184 / 0.42);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .tl-tick-h-major {
+            background: rgb(100 116 139 / 0.55);
+        }
+        .tl-time-label {
+            pointer-events: none;
+            z-index: 4;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 2px 5px 3px;
+            border-radius: 3px;
+            box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.9);
+            white-space: nowrap;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+        .tl-ready-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .tl-ready-line-bar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            transform: translateY(-50%);
+            height: 3px;
+            background: rgb(225 29 72);
+            border-radius: 2px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(15, 23, 42, 0.2);
+        }
+        .tl-ready-line-rail .tl-ready-line-caption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            transform: translateY(calc(-100% - 10px));
+            z-index: 5;
+            font-size: 7px;
+            line-height: 1.08;
+            text-align: center;
+            letter-spacing: 0.02em;
+            color: rgb(157 23 77);
+            font-weight: 800;
+            padding: 3px 4px 4px;
+            margin: 0 1px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 0 0 1px rgba(254, 205, 211, 0.6);
+        }
+        @media (min-width: 640px) {
+            .tl-ready-line-rail .tl-ready-line-caption {
+                font-size: 8px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .tl-ready-line-rail .tl-ready-line-caption strong {
+            display: block;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .tl-ready-line-rail .tl-ready-line-caption time {
+            display: block;
+            font-variant-numeric: tabular-nums;
+            margin-top: 1px;
+        }
+        .tl-block-v {
+            position: absolute;
+            left: 0;
+            right: 0;
+            min-height: 4px;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(2.5rem, 3.5rem);
+            align-items: start;
+            column-gap: 0.28rem;
+            padding: 0.44rem 0.38rem 0.52rem;
+            overflow: hidden;
+            z-index: 2;
+        }
+        .tl-block-v-copy {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: visible;
+            padding: 0 0.1rem 1px 0;
+        }
+        .tl-block-v-copy span:first-child {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            line-height: 1.3;
+            padding-bottom: 1px;
+        }
+        .tl-block-v-duration {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            justify-self: start;
+            align-self: start;
+            min-width: 0;
+            max-width: 3.5rem;
+            width: 100%;
+            padding: 3px 4px 3px 5px;
+            border-radius: 0.3rem;
+            border-left: 1px solid rgba(15, 23, 42, 0.1);
+            background: rgba(255, 255, 255, 0.65);
+        }
+        .tl-block-v-duration .tl-duration-text {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            margin-left: auto;
+            font-size: 0.6875rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: rgb(15 23 42);
+        }
+        @media (min-width: 640px) {
+            .tl-block-v {
+                grid-template-columns: minmax(0, 1fr) minmax(2.65rem, 3.75rem);
+            }
+            .tl-block-v-duration {
+                max-width: 3.75rem;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            .tl-block-v-duration .tl-duration-text {
+                font-size: 0.75rem;
+            }
+        }
+        .tl-block-v.tl-block-bride-b .tl-block-v-duration .tl-duration-text {
+            color: rgb(136 19 55);
+        }
+        .tl-block-v:active {
+            cursor: grabbing;
+            z-index: 10;
+        }
+        .tl-block-v.tl-block-hair {
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        .tl-block-v.tl-block-makeup {
+            background: linear-gradient(180deg, #eff6ff 0%, #bfdbfe 100%);
+        }
+        .tl-block-v.tl-block-touchup {
+            border-style: dashed;
+        }
+        .tl-block-v.tl-block-hair.tl-block-touchup {
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        .tl-block-v.tl-block-makeup.tl-block-touchup {
+            background: linear-gradient(180deg, #e0f2fe 0%, #93c5fd 100%);
+        }
+        .tl-block-v.tl-block-bride-b {
+            box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.45), 0 2px 6px rgba(15,23,42,0.14);
+        }
+        .tl-block-v.tl-block-dragging {
+            opacity: 0.92;
+            z-index: 20;
+            box-shadow: 0 10px 25px rgba(15,23,42,0.22);
+        }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
 
-    <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+    <div class="w-full max-w-none mx-auto bg-white shadow-xl rounded-2xl border border-gray-100 overflow-x-visible">
         <!-- Header -->
         <div class="bg-slate-900 p-6 md:p-8 text-white">
             <div class="flex justify-between items-center">
@@ -49,12 +325,12 @@
                     <p class="text-slate-400 text-sm">Balanced Team Load • Lead Sync • Manual Refresh & Reset</p>
                 </div>
                 <div class="text-right hidden sm:block">
-                    <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Version 9.4</span>
+                    <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Version 10.0</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 lg:overflow-x-visible">
             <!-- Left Sidebar: Settings & Inputs -->
             <div class="p-6 bg-slate-50 border-r border-gray-200 lg:col-span-3">
                 <h2 class="text-lg text-slate-800 mb-6 font-bold">Settings</h2>
@@ -112,7 +388,7 @@
             </div>
 
             <!-- Middle: Roster -->
-            <div class="p-6 lg:col-span-5 border-r border-gray-100">
+            <div class="p-6 lg:col-span-4 border-r border-gray-100">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl text-slate-800 font-bold">Service Roster</h2>
                     <span id="serviceCount" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">0 Services</span>
@@ -128,11 +404,10 @@
             </div>
 
             <!-- Right: Master Timeline -->
-            <div class="p-6 lg:col-span-4 bg-white overflow-y-auto max-h-[85vh] schedule-scroll">
+            <div class="p-6 lg:col-span-5 lg:min-w-min bg-white overflow-y-auto overflow-x-visible max-h-[85vh] schedule-scroll tl-twelve-hr">
                 <div class="mb-6 flex justify-between items-end gap-4">
                     <div>
                         <h2 class="text-xl text-slate-800 font-bold">Master Schedule</h2>
-                        <p class="text-xs text-slate-400 italic">Balanced Distribution & Dynamic Lead Priority</p>
                     </div>
                     <div class="text-right shrink-0">
                         <span class="text-[10px] uppercase font-bold text-rose-400 block tracking-widest">Earliest Arrival</span>
@@ -143,8 +418,23 @@
                     <!-- Amber notices when scheduler auto-adjusts bride slots -->
                 </div>
 
-                <div id="timelineContainer" class="space-y-8">
-                    <!-- Station timelines -->
+                <div id="timelineContainer" class="space-y-5">
+                    <!-- master timeline pane -->
+                </div>
+
+                <div id="brideMkBeforeHairModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-labelledby="brideMkBeforeHairTitle">
+                    <div class="max-w-md w-full rounded-2xl bg-white shadow-2xl border border-rose-100 p-6">
+                        <h3 id="brideMkBeforeHairTitle" class="text-lg font-bold text-slate-900 mb-2">Makeup before hair?</h3>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">The usual default is bridal hair first, then makeup. You chose a bridal makeup placement that finishes before bridal hair begins. Confirm you want that order.</p>
+                        <label class="flex items-start gap-2 cursor-pointer mb-5">
+                            <input type="checkbox" id="brideMkBeforeHairAckCb" class="mt-1 h-4 w-4 shrink-0 rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                            <span class="text-xs font-semibold text-slate-800">I understand and want bridal makeup before bridal hair.</span>
+                        </label>
+                        <div class="flex flex-wrap gap-2 justify-end">
+                            <button type="button" onclick="cancelBrideMakeupBeforeHairModal()" class="px-4 py-2 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50">Cancel</button>
+                            <button type="button" onclick="confirmBrideMakeupBeforeHairModal()" class="px-4 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700">Apply placement</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-8 pt-5 border-t border-slate-200/80">
@@ -184,8 +474,470 @@
             { id: 1, role: 'Bride', hair: true, makeup: true, hairMinutes: 90, makeupMinutes: 90, type: 'person' }
         ];
 
+        /** Default vertical pane (Ready day, local): 5:00 AM → 5:00 PM. */
+        const TIMELINE_DAY_DEFAULT_START_HOUR = 5;
+        const TIMELINE_DAY_DEFAULT_END_HOUR = 17;
+        /** When Ready or any appointment spills outside default strip, pane becomes this span (still 12 hourly ticks inside). */
+        const TIMELINE_DYNAMIC_SPAN_MS = 12 * 3600000;
+        const TIMELINE_DYNAMIC_HALF_MS = TIMELINE_DYNAMIC_SPAN_MS / 2;
+
+        /**
+         * Visible timeline window: defaults to 5 AM–5 PM on the Ready calendar day.
+         * If Ready or any block lands outside [5 AM, 5 PM], uses a sliding 12‑hour pane that fits Ready and the bookings
+         * (centered when they fit inside 12 h), clamped to that calendar day’s midnight bounds.
+         */
+        function timelineVisiblePaneMs(readyDate, allBlocks) {
+            const r = readyDate instanceof Date ? readyDate : new Date(readyDate);
+            const readyMs = r.getTime();
+            const windowStartFixed = new Date(r.getFullYear(), r.getMonth(), r.getDate(), TIMELINE_DAY_DEFAULT_START_HOUR, 0, 0, 0).getTime();
+            const windowEndFixed = new Date(r.getFullYear(), r.getMonth(), r.getDate(), TIMELINE_DAY_DEFAULT_END_HOUR, 0, 0, 0).getTime();
+            const dayStart = new Date(r.getFullYear(), r.getMonth(), r.getDate(), 0, 0, 0, 0).getTime();
+            const dayEndExcl = new Date(r.getFullYear(), r.getMonth(), r.getDate() + 1, 0, 0, 0, 0).getTime();
+
+            let blockMin = readyMs;
+            let blockMax = readyMs;
+            if (allBlocks.length) {
+                blockMin = Math.min(...allBlocks.map(b => b.startMs));
+                blockMax = Math.max(...allBlocks.map(b => b.endMs));
+            }
+
+            const outsideDefault =
+                readyMs > windowEndFixed
+                || readyMs < windowStartFixed
+                || blockMin < windowStartFixed
+                || blockMax > windowEndFixed;
+
+            if (!outsideDefault) {
+                return {
+                    windowStartMs: windowStartFixed,
+                    windowEndMs: windowEndFixed,
+                    spanMs: Math.max(1, windowEndFixed - windowStartFixed),
+                    mode: 'default'
+                };
+            }
+
+            const lo = Math.min(readyMs, blockMin);
+            const hi = Math.max(readyMs, blockMax);
+            let winStart;
+            let winEnd;
+            if (hi - lo <= TIMELINE_DYNAMIC_SPAN_MS) {
+                const mid = (lo + hi) / 2;
+                winStart = mid - TIMELINE_DYNAMIC_HALF_MS;
+                winEnd = mid + TIMELINE_DYNAMIC_HALF_MS;
+            } else {
+                winEnd = Math.min(dayEndExcl, Math.max(hi, readyMs + TIMELINE_DYNAMIC_HALF_MS));
+                winStart = winEnd - TIMELINE_DYNAMIC_SPAN_MS;
+            }
+
+            if (winStart < dayStart) {
+                winStart = dayStart;
+                winEnd = Math.min(dayEndExcl, winStart + TIMELINE_DYNAMIC_SPAN_MS);
+            }
+            if (winEnd > dayEndExcl) {
+                winEnd = dayEndExcl;
+                winStart = Math.max(dayStart, winEnd - TIMELINE_DYNAMIC_SPAN_MS);
+            }
+
+            const spanMs = Math.max(1, winEnd - winStart);
+            return { windowStartMs: winStart, windowEndMs: winEnd, spanMs, mode: 'dynamic' };
+        }
+
+        /** % of schedule pane height shaved from each block edge (capped vs. slice height so tiny slots stay readable). */
+        const TL_BLOCK_EDGE_INSET_PCT = 0.34;
+
+        function timelineBlockInsetTopHeightPct(visStartMs, visEndMs, windowStartMs, spanMs) {
+            const span = Math.max(1, spanMs);
+            const rawTop = ((visStartMs - windowStartMs) / span) * 100;
+            const rawH = Math.max(((visEndMs - visStartMs) / span) * 100, 0);
+            const gMax = TL_BLOCK_EDGE_INSET_PCT;
+            const g = Math.min(gMax, Math.max(0.06, rawH * 0.12));
+            const hVis = Math.max(rawH - 2 * g, Math.max(1.05, rawH * 0.42));
+            return {
+                topPct: rawTop + g,
+                heightPct: hVis
+            };
+        }
+
+        const SNAP_STEP_MS = 15 * 60000;
+        let scheduleStartOverrides = {};
+        /** Pending bridal MU drag awaiting modal: { ms, brideId } */
+        let brideMakeupBeforeHairPendingMs = null;
+        /** Last drag state for redraw */
+        let __timelineDragContext = null;
+
+        function sanitizeBlockKeyPart(id) {
+            return String(id).replace(/[^a-zA-Z0-9._-]/g, '_');
+        }
+
+        function makeBlockKey(discipline, artistIndex, rosterId, isTouchup) {
+            const p = sanitizeBlockKeyPart(rosterId);
+            return `${discipline === 'Hair' ? 'hair' : 'mk'}:${artistIndex}:${isTouchup ? 'tu-' : ''}${p}`;
+        }
+
+        function personBracketLabel(person) {
+            if (!person || person.type !== 'person') return '';
+            if (person.role === 'Bride') return '[Bride]';
+            const m = /^Bridal Party Member (\d+)$/i.exec(person.role || '');
+            if (m) return `[Bridesmaid ${m[1]}]`;
+            if (isPartyMemberRow(person)) return `[${person.role}]`;
+            return '';
+        }
+
+        function formatDurationLarge(mins) {
+            const m = Math.max(0, Math.round(Number(mins) || 0));
+            if (m >= 60 && m % 60 === 0) return `${m / 60} hr`;
+            if (m >= 60) return `${Math.floor(m / 60)}h ${m % 60}m`;
+            return `${m} min`;
+        }
+
+        function snapMsToStep(ms) {
+            return Math.round(ms / SNAP_STEP_MS) * SNAP_STEP_MS;
+        }
+
+        function clampStartForDuration(startMs, durationMs, floorMs, readyMs) {
+            const latest = readyMs - durationMs;
+            const s = snapMsToStep(Math.max(floorMs, Math.min(startMs, latest)));
+            if (s + durationMs > readyMs + 2) return snapMsToStep(Math.max(floorMs, latest));
+            return s;
+        }
+
+        function intervalsOverlapMs(a0, a1Excl, b0, b1Excl) {
+            return Math.max(a0, b0) < Math.min(a1Excl, b1Excl);
+        }
+
+        function pruneStaleScheduleOverrides() {
+            const alive = new Set();
+            roster.forEach(p => {
+                if (p.id != null) alive.add(sanitizeBlockKeyPart(p.id));
+            });
+            const next = {};
+            Object.keys(scheduleStartOverrides).forEach(k => {
+                const part = k.split(':').pop() || '';
+                const idPart = part.replace(/^tu-/, '');
+                if (alive.has(idPart)) next[k] = scheduleStartOverrides[k];
+            });
+            scheduleStartOverrides = next;
+        }
+
+        function isBridalMakeupBeforeHair(mkStartMs, mkDurMin, hairStartMs, hairDurMin) {
+            if (hairDurMin <= 0 || mkDurMin <= 0) return false;
+            const mkEnd = mkStartMs + mkDurMin * 60000;
+            return mkEnd <= hairStartMs + 2;
+        }
+
+        function cancelBrideMakeupBeforeHairModal() {
+            brideMakeupBeforeHairPendingMs = null;
+            const m = document.getElementById('brideMkBeforeHairModal');
+            const cb = document.getElementById('brideMkBeforeHairAckCb');
+            if (cb) cb.checked = false;
+            if (m) m.classList.add('hidden');
+        }
+
+        function confirmBrideMakeupBeforeHairModal() {
+            const cb = document.getElementById('brideMkBeforeHairAckCb');
+            const b = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            if (!cb?.checked || brideMakeupBeforeHairPendingMs == null || !b) {
+                return;
+            }
+            b.brideMakeupBeforeHairAcknowledged = true;
+            const dur = (b.makeupMinutes ?? 90) * 60000;
+            const readyTimeStr = document.getElementById('readyTime').value;
+            const [h, mn] = readyTimeStr.split(':').map(Number);
+            const rd = new Date();
+            rd.setHours(h, mn, 0, 0);
+            const floorMs = appointmentEarliestMs(rd);
+            const ms = clampStartForDuration(brideMakeupBeforeHairPendingMs, dur, floorMs, rd.getTime());
+            const key = makeBlockKey('Makeup', 0, b.id, false);
+            scheduleStartOverrides[key] = ms;
+            b.brideMakeupSlotHHMM = hhmmLocal(new Date(ms));
+            cancelBrideMakeupBeforeHairModal();
+            calculate();
+        }
+
+        function tryCommitBridalMakeupDrag(proposedMs, ctx) {
+            const b = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            const key = ctx.brideMkKey;
+            if (!b || !key) {
+                if (key) {
+                    scheduleStartOverrides[key] = clampStartForDuration(proposedMs, ctx.mkDurMs, ctx.floorMs, ctx.readyMs);
+                    calculate();
+                }
+                return;
+            }
+            const snapped = clampStartForDuration(proposedMs, ctx.mkDurMs, ctx.floorMs, ctx.readyMs);
+            const beforeHair = isBridalMakeupBeforeHair(snapped, ctx.mkDurMin, ctx.hairStartMs, ctx.hairDurMin);
+            if (!beforeHair) {
+                b.brideMakeupBeforeHairAcknowledged = false;
+                scheduleStartOverrides[ctx.brideMkKey] = snapped;
+                b.brideMakeupSlotHHMM = hhmmLocal(new Date(snapped));
+                calculate();
+                return;
+            }
+            if (b.brideMakeupBeforeHairAcknowledged === true) {
+                scheduleStartOverrides[ctx.brideMkKey] = snapped;
+                b.brideMakeupSlotHHMM = hhmmLocal(new Date(snapped));
+                calculate();
+                return;
+            }
+            brideMakeupBeforeHairPendingMs = snapped;
+            const modal = document.getElementById('brideMkBeforeHairModal');
+            const cb = document.getElementById('brideMkBeforeHairAckCb');
+            if (cb) cb.checked = false;
+            if (modal) modal.classList.remove('hidden');
+        }
+
+
+        /**
+         * Stack blocks in timeline order without overlap. Uses per-block Ready deadline via getReadyDeadline(block)
+         * (number or fn). Bridal auto placements use tighter deadlines; dragged blocks bypass via overrides before pack.
+         */
+        function sequentialPackTrack(blocks, floorMs, getReadyDeadline) {
+            let cur = null;
+            blocks.forEach(b => {
+                const dur = b.durationMin * 60000;
+                const readyDeadlineMs = typeof getReadyDeadline === 'function' ? getReadyDeadline(b) : getReadyDeadline;
+                let s = snapMsToStep(b.startMs);
+                if (cur != null) s = Math.max(s, snapMsToStep(cur));
+                s = clampStartForDuration(s, dur, floorMs, readyDeadlineMs);
+                if (cur != null && s + 2 < cur) {
+                    s = clampStartForDuration(snapMsToStep(cur), dur, floorMs, readyDeadlineMs);
+                }
+                b.startMs = s;
+                b.endMs = s + dur;
+                cur = b.endMs;
+            });
+        }
+
+        function sortBlocksForPack(blocks) {
+            const bride = blocks.filter(b => b.isBride);
+            const rest = blocks.filter(b => !b.isBride).sort((a, b) => (a.autoStartMs - b.autoStartMs) || (a.packOrder - b.packOrder));
+            return bride.concat(rest);
+        }
+
+        function renderTwelveHourTimeline(allBlocks, readyDate, teamEarliestArrival) {
+            const readyMs = readyDate.getTime();
+            const { windowStartMs, windowEndMs, spanMs } = timelineVisiblePaneMs(readyDate, allBlocks);
+            const span = spanMs;
+
+            const readyClampedMs = Math.min(Math.max(readyMs, windowStartMs), windowEndMs);
+            const readyLineTopPct = ((readyClampedMs - windowStartMs) / span) * 100;
+            const readyTimeEsc = escapeHtml(formatTime(readyDate));
+            const readyLineRailHtml =
+                `<div class="tl-ready-line tl-ready-line-rail" style="top:${readyLineTopPct.toFixed(3)}%" aria-hidden="true">
+                    <div class="tl-ready-line-bar"></div>
+                    <div class="tl-ready-line-caption"><strong>Ready by</strong><time>${readyTimeEsc}</time></div>
+                </div>`;
+            const readyLineStationHtml =
+                `<div class="tl-ready-line" style="top:${readyLineTopPct.toFixed(3)}%" aria-hidden="true"><div class="tl-ready-line-bar"></div></div>`;
+
+            function horizontalTicksMarkup() {
+                let t = '';
+                for (let i = 0; i <= 12; i++) {
+                    const pct = (i / 12) * 100;
+                    const major = i % 2 === 0;
+                    t += `<span class="tl-tick-h ${major ? 'tl-tick-h-major' : ''}" style="top:${pct}%"></span>`;
+                }
+                return t;
+            }
+
+            let timeRail = '<div class="tl-time-rail-outer min-w-[6.125rem] w-[6.125rem] sm:min-w-[6.875rem] sm:w-[6.875rem] shrink-0">';
+            timeRail += '<div class="tl-station-heading-row tl-time-rail-heading-spacer" aria-hidden="true"></div>';
+            timeRail += '<div class="tl-time-rail tl-track-v relative rounded-lg border border-slate-200 bg-white">';
+            timeRail += '<div class="tl-schedule-pane">';
+            timeRail += horizontalTicksMarkup();
+            for (let i = 0; i <= 12; i++) {
+                const pct = (i / 12) * 100;
+                const tickMs = windowStartMs + (i / 12) * span;
+                const label = formatTime(new Date(tickMs));
+                let posStyle;
+                if (i === 12) posStyle = 'bottom:6px;top:auto;transform:none;right:3px;line-height:1.1';
+                else if (i === 0) posStyle = 'top:4px;transform:none;right:3px;line-height:1.1';
+                else posStyle = `top:${pct}%;transform:translateY(-50%);right:3px;line-height:1.1`;
+                timeRail += `<span class="tl-time-label absolute text-[8px] sm:text-[9px] font-semibold text-slate-700 text-right" style="${posStyle}">${escapeHtml(label)}</span>`;
+            }
+            timeRail += readyLineRailHtml;
+            timeRail += '</div></div></div>';
+
+            const byStation = {};
+            allBlocks.forEach(b => {
+                const k = `${b.discipline}-${b.artistIndex}`;
+                if (!byStation[k]) byStation[k] = [];
+                byStation[k].push(b);
+            });
+
+            let columnsHtml = '<div class="tl-columns-row">';
+            Object.keys(byStation).sort((a, b) => {
+                const [da, ia] = a.split('-');
+                const [db, ib] = b.split('-');
+                if (da !== db) return da.localeCompare(db);
+                return (parseInt(ia, 10) || 0) - (parseInt(ib, 10) || 0);
+            }).forEach(k => {
+                const parts = k.split('-');
+                const discipline = parts[0];
+                const idx = parseInt(parts[1], 10);
+                const blocks = byStation[k];
+                const isLead = blocks[0]?.isLead;
+                columnsHtml += `
+                    <div class="tl-station-card flex min-w-[11.25rem] sm:min-w-[12rem] shrink-0 flex-col">
+                        <div class="tl-station-heading-row text-center text-[9px] sm:text-[10px] font-bold uppercase tracking-tight text-slate-700 px-1 leading-tight">
+                            <span class="inline-block w-1.5 h-1.5 rounded-full ${isLead ? 'bg-rose-600' : 'bg-slate-400'} mr-1 align-middle"></span>
+                            ${escapeHtml(discipline)} ${idx + 1}${isLead ? ' · Lead' : ''}
+                        </div>
+                        <div class="tl-track tl-track-v tl-track-station-inner relative shrink-0">
+                            <div class="tl-schedule-pane">
+                                ${horizontalTicksMarkup()}
+                                ${readyLineStationHtml}
+                `;
+                blocks.forEach(b => {
+                    const visStart = Math.max(b.startMs, windowStartMs);
+                    const visEnd = Math.min(b.endMs, windowEndMs);
+                    if (visEnd <= visStart) return;
+                    const { topPct, heightPct } = timelineBlockInsetTopHeightPct(visStart, visEnd, windowStartMs, span);
+                    const cls = [
+                        'tl-block-v',
+                        b.discipline === 'Hair' ? 'tl-block-hair' : 'tl-block-makeup',
+                        b.isTouchup ? 'tl-block-touchup' : '',
+                        b.isBride ? 'tl-block-bride-b' : ''
+                    ].join(' ');
+                    const timeStr = `${formatTime(new Date(b.startMs))}\u202f–\u202f${formatTime(new Date(b.endMs))}`;
+                    const metaLine = [b.subtitle, b.serviceWord, timeStr].filter(Boolean).join('\u202f·\u202f');
+                    const tip = [b.title, metaLine].filter(Boolean).join('\u202f·\u202f');
+                    columnsHtml += `
+                        <div class="${cls.trim()}"
+                            role="slider"
+                            aria-valuemin="0"
+                            style="top:${topPct.toFixed(3)}%;height:${heightPct.toFixed(3)}%"
+                            data-tl-drag="1"
+                            data-block-key="${escapeHtml(b.key)}"
+                            title="${escapeHtml(tip)}">
+                            <div class="tl-block-v-copy">
+                                <span class="text-[11px] sm:text-[12px] font-black text-slate-900 leading-[1.3] break-words">${escapeHtml(b.title)}</span>
+                                ${metaLine ? `<span class="text-[8px] sm:text-[9px] font-semibold text-slate-600 leading-snug mt-0.5 line-clamp-3">${escapeHtml(metaLine)}</span>` : ''}
+                            </div>
+                            <div class="tl-block-v-duration">
+                                <span class="tl-duration-text">${escapeHtml(formatDurationLarge(b.durationMin))}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                columnsHtml += '</div></div></div>';
+            });
+            columnsHtml += '</div>';
+
+            document.getElementById('timelineContainer').innerHTML =
+                `<div class="tl-shell">${timeRail}${columnsHtml}</div>`;
+
+            document.getElementById('displayStart').innerText =
+                teamEarliestArrival != null ? formatTime(teamEarliestArrival) : '--:--';
+
+            const brideRow = roster.find(x => x.type === 'person' && x.role === 'Bride');
+            const bridesHair = allBlocks.find(b => b.discipline === 'Hair' && b.isBride);
+            const bridesMk = allBlocks.find(b => b.discipline === 'Makeup' && b.isBride);
+            __timelineDragContext = {
+                readyMs,
+                floorMs: appointmentEarliestMs(readyDate),
+                windowStart: windowStartMs,
+                windowEnd: windowEndMs,
+                blocksByKey: Object.fromEntries(allBlocks.map(b => [b.key, b])),
+                brideMkKey: bridesMk ? bridesMk.key : null,
+                hasBrideHair: !!bridesHair,
+                hasBrideMakeup: !!bridesMk,
+                hairStartMs: bridesHair ? bridesHair.startMs : 0,
+                hairDurMin: bridesHair ? bridesHair.durationMin : 0,
+                mkDurMin: bridesMk ? bridesMk.durationMin : 0,
+                mkDurMs: bridesMk ? bridesMk.durationMin * 60000 : 0,
+                brideRow
+            };
+        }
+
+        /** One-time delegated drag handlers */
+        (function setupTimelineDragging() {
+            if (window.__tlDragListening) return;
+            window.__tlDragListening = true;
+            let drag = null;
+            document.addEventListener('pointerdown', ev => {
+                const el = ev.target.closest('[data-tl-drag="1"]');
+                if (!el || !el.isConnected || !document.getElementById('timelineContainer')?.contains(el)) return;
+                const key = el.getAttribute('data-block-key');
+                const ctx = __timelineDragContext;
+                if (!key || !ctx?.blocksByKey[key]) return;
+                ev.preventDefault();
+                const track = el.closest('.tl-track');
+                if (!track) return;
+                drag = {
+                    el,
+                    key,
+                    pointerId: ev.pointerId,
+                    startClientY: ev.clientY,
+                    origStartMs: ctx.blocksByKey[key].startMs,
+                    durationMs: ctx.blocksByKey[key].durationMin * 60000,
+                    rect: track.getBoundingClientRect()
+                };
+                el.classList.add('tl-block-dragging');
+                el.setPointerCapture(ev.pointerId);
+            });
+
+            document.addEventListener('pointermove', ev => {
+                if (!drag || ev.pointerId !== drag.pointerId) return;
+                const ctx = __timelineDragContext;
+                if (!ctx || !drag.el) return;
+                const dy = ev.clientY - drag.startClientY;
+                const hTrack = drag.rect.height || 1;
+                const timelineSpanMs = Math.max(1, ctx.windowEnd - ctx.windowStart);
+                const deltaMs = (dy / hTrack) * timelineSpanMs;
+                let nextMs = drag.origStartMs + deltaMs;
+                nextMs = clampStartForDuration(nextMs, drag.durationMs, ctx.floorMs, ctx.readyMs);
+                const visStart = Math.max(nextMs, ctx.windowStart);
+                const visEnd = Math.min(nextMs + drag.durationMs, ctx.windowEnd);
+                if (visEnd > visStart) {
+                    const { topPct, heightPct } = timelineBlockInsetTopHeightPct(
+                        visStart,
+                        visEnd,
+                        ctx.windowStart,
+                        timelineSpanMs
+                    );
+                    drag.el.style.top = topPct.toFixed(3) + '%';
+                    drag.el.style.height = heightPct.toFixed(3) + '%';
+                }
+            });
+
+            document.addEventListener('pointerup', ev => {
+                if (!drag || ev.pointerId !== drag.pointerId) return;
+                const ctx = __timelineDragContext;
+                if (drag.el) drag.el.classList.remove('tl-block-dragging');
+                if (ctx) {
+                    const dy = ev.clientY - drag.startClientY;
+                    const hTrack = drag.rect.height || 1;
+                    const timelineSpanMs = Math.max(1, ctx.windowEnd - ctx.windowStart);
+                    const deltaMs = (dy / hTrack) * timelineSpanMs;
+                    let nextMs = drag.origStartMs + deltaMs;
+                    nextMs = clampStartForDuration(nextMs, drag.durationMs, ctx.floorMs, ctx.readyMs);
+                    const blk = ctx.blocksByKey[drag.key];
+                    if (blk?.isBride && blk.discipline === 'Makeup') {
+                        tryCommitBridalMakeupDrag(nextMs, ctx);
+                    } else {
+                        scheduleStartOverrides[drag.key] = nextMs;
+                        const pr = roster.find(p => p.id === blk?.rosterId && p.type === 'person');
+                        if (pr && blk?.isBride && blk.discipline === 'Hair') pr.brideHairSlotHHMM = hhmmLocal(new Date(nextMs));
+                        calculate();
+                    }
+                }
+                drag = null;
+            });
+
+            document.addEventListener('pointercancel', ev => {
+                if (!drag || ev.pointerId !== drag.pointerId) return;
+                if (drag.el) drag.el.classList.remove('tl-block-dragging');
+                drag = null;
+                calculate();
+            });
+        })();
+
         // The "Refresh/Reset" function
         function resetRoster() {
+            scheduleStartOverrides = {};
+            brideMakeupBeforeHairPendingMs = null;
+            cancelBrideMakeupBeforeHairModal();
             // Confirmation via custom look (since alert/confirm is discouraged, we'll just execute it)
             // or we just return to initial state
             roster = [
@@ -402,6 +1154,18 @@
             return d;
         }
 
+        /** Same calendar day as dayRef (local) — appointments are not offered before this wall time. */
+        const APPOINTMENT_EARLIEST_HOUR = 5;
+        /** Auto-schedule only: bride hair must END ≥ this long before Ready (drag overrides ignore this). */
+        const BRIDE_HAIR_FINISH_BUFFER_MS = 3 * 60 * 60 * 1000;
+        /** Auto-schedule only: bride makeup must END ≥ this long before Ready (drag overrides ignore this). */
+        const BRIDE_MAKEUP_FINISH_BUFFER_MS = 1 * 60 * 60 * 1000;
+        function appointmentEarliestMs(dayRef) {
+            const d = new Date(dayRef.getTime());
+            d.setHours(APPOINTMENT_EARLIEST_HOUR, 0, 0, 0);
+            return d.getTime();
+        }
+
         function closestTimeInSlotList(dayRef, slots, preferredHHMM) {
             if (!slots.length) return null;
             const pref = preferredHHMM && hhmmParseOnSameDay(dayRef, preferredHHMM);
@@ -417,10 +1181,13 @@
             const readyMs = readyDate.getTime();
             const dur = durationMin * 60000;
             const step = stepMin * 60000;
+            const floorMs = appointmentEarliestMs(readyDate);
             const loT = earliestStart.getTime();
             const hiT = latestStart.getTime();
-            const lo = Math.min(loT, hiT);
+            let lo = Math.min(loT, hiT);
             const hi = Math.max(loT, hiT);
+            if (lo < floorMs) lo = floorMs;
+            if (lo > hi) return [];
             const out = [];
             let t = Math.ceil(lo / step) * step;
             while (t <= hi + 1) {
@@ -430,9 +1197,56 @@
             return out;
         }
 
-        /** True if intervals [aStart,aEnd] and [bStart,bEnd] overlap (exclusive end-safe with ms). */
-        function intervalsOverlapMs(aStart, aEndExcl, bStart, bEndExcl) {
-            return Math.max(aStart, bStart) < Math.min(aEndExcl, bEndExcl);
+        /** Bridal makeup slot grid (15 min): overlaps with bridal hair forbidden except via explicit MU override (modal). */
+        function brideMakeupNonOverlapSlots(
+            readyDate,
+            brideMakeupBlockMin,
+            partyFloorSnappedMs,
+            makeupLatestSnapMs,
+            hasBrideHair,
+            hairStartMs,
+            hairBlockMin,
+            cosmeticLookbackLoMs,
+            stepMin = 15
+        ) {
+            const durMs = brideMakeupBlockMin * 60000;
+            const stepMs = stepMin * 60000;
+            const loFloor = Math.max(cosmeticLookbackLoMs, partyFloorSnappedMs); // partyFloorSnappedMs: min wall time (e.g. 5am)
+            const hiCeil = makeupLatestSnapMs;
+            const merged = new Set();
+
+            function pushSegment(loMs, hiMs) {
+                if (hiMs < loMs) return;
+                const loClamped = Math.max(loMs, loFloor);
+                const hiClamped = Math.min(hiMs, hiCeil);
+                if (loClamped > hiClamped) return;
+                buildSlotsInclusive(readyDate, brideMakeupBlockMin, new Date(loClamped), new Date(hiClamped), stepMin)
+                    .forEach(d => merged.add(d.getTime()));
+            }
+
+            if (!hasBrideHair || hairBlockMin <= 0) {
+                pushSegment(loFloor, hiCeil);
+            } else {
+                const hs = hairStartMs;
+                const hairEndMs = hs + hairBlockMin * 60000;
+                const beforeLatestStart = Math.min(hiCeil, Math.floor((hs - durMs) / stepMs) * stepMs);
+                pushSegment(loFloor, beforeLatestStart);
+                const afterEarliestStart = Math.max(loFloor, Math.ceil(hairEndMs / stepMs) * stepMs);
+                pushSegment(afterEarliestStart, hiCeil);
+            }
+
+            return [...merged].sort((a, b) => a - b).map(ms => new Date(ms));
+        }
+
+        /**
+         * Bridal makeup autopick defaults to slots that start after bridal hair ends (when both exist).
+         * If that set is empty, falls back to the full merged slot list (tight Ready window edge case).
+         */
+        function bridalMakeupAutoPickSlots(hasBrideHair, hairStartMs, hairBlockMin, mergedSlots) {
+            if (!hasBrideHair || hairBlockMin <= 0 || !mergedSlots.length) return mergedSlots.slice();
+            const hairEndMs = hairStartMs + hairBlockMin * 60000;
+            const after = mergedSlots.filter(s => s.getTime() >= hairEndMs - 1);
+            return after.length ? after : mergedSlots.slice();
         }
 
         function setBrideHairSlotHHMM(hhmm) {
@@ -461,6 +1275,7 @@
             if (roster.length === 0) {
                 rosterContainer.innerHTML = '';
                 timelineContainer.innerHTML = '';
+                __timelineDragContext = null;
                 const brideCtlEl = document.getElementById('brideSlotControlsWrap');
                 if (brideCtlEl) {
                     brideCtlEl.innerHTML = '';
@@ -477,6 +1292,7 @@
                 return;
             }
             emptyState.classList.add('hidden');
+            pruneStaleScheduleOverrides();
 
             let hairBride = [], hairParty = [], hairTouchups = [];
             let makeupBride = [], makeupParty = [], makeupTouchups = [];
@@ -488,7 +1304,7 @@
                             ? (item.hairMinutes ?? 90)
                             : clampPartyHairMinutes(item.hairMinutes ?? 60);
                         const labelBase = scheduleBaseLabel(item);
-                        const entry = { label: `${labelBase} Hair`, duration: dur, isBride: item.role === 'Bride' };
+                        const entry = { label: `${labelBase} Hair`, duration: dur, isBride: item.role === 'Bride', rosterId: item.id };
                         if (item.role === 'Bride') hairBride.push(entry); else hairParty.push(entry);
                     }
                     if (item.makeup) {
@@ -496,12 +1312,12 @@
                             ? (item.makeupMinutes ?? 90)
                             : clampPartyMakeupMinutes(item.makeupMinutes ?? 60);
                         const labelBase = scheduleBaseLabel(item);
-                        const entry = { label: `${labelBase} Makeup`, duration: dur, isBride: item.role === 'Bride' };
+                        const entry = { label: `${labelBase} Makeup`, duration: dur, isBride: item.role === 'Bride', rosterId: item.id };
                         if (item.role === 'Bride') makeupBride.push(entry); else makeupParty.push(entry);
                     }
                 } else {
                     const duration = item.hours * 60;
-                    const entry = { label: `Touch Ups (${item.category})`, duration, isTouchup: true };
+                    const entry = { label: `Touch Ups (${item.category})`, duration, isTouchup: true, rosterId: item.id };
                     if (item.category === 'Hair') hairTouchups.push(entry); else makeupTouchups.push(entry);
                 }
             });
@@ -551,6 +1367,7 @@
             const [h, m] = readyTimeStr.split(':').map(Number);
             const readyDate = new Date();
             readyDate.setHours(h, m, 0, 0);
+            const appointmentFloorMs = appointmentEarliestMs(readyDate);
 
             const getLeadPartyMinutes = (stations) => stations.find(s => s.isLead).items.reduce((sum, i) => sum + i.duration, 0);
             
@@ -564,14 +1381,28 @@
             const leadMakeupTotal = (hasBrideMakeup ? brideMakeupTotalMin : 0) + getLeadPartyMinutes(makeupStations);
             
             const leadMaxSpan = Math.max(leadHairTotal, leadMakeupTotal);
-            const leadStartTime = new Date(readyDate.getTime() - (leadMaxSpan * 60000));
-            const baselineLeadMs = leadStartTime.getTime();
+            const baselineLeadMs = Math.max(readyDate.getTime() - (leadMaxSpan * 60000), appointmentFloorMs);
             const readyMs = readyDate.getTime();
             const STEP_MS = 15 * 60000;
+            const STEP_MIN = STEP_MS / 60000;
             const LOOKBACK_MS = 12 * 3600000;
 
+            const bridPackId = brideScheduleRow && brideScheduleRow.id != null ? brideScheduleRow.id : null;
+            const brideHairPackKey = bridPackId != null && hasBrideHair ? makeBlockKey('Hair', 0, bridPackId, false) : null;
+            const brideMkPackKey = bridPackId != null && hasBrideMakeup ? makeBlockKey('Makeup', 0, bridPackId, false) : null;
+
+            /** End-of-service deadline passed to sequential pack clamp (autos use bridal buffers unless overridden). */
+            function getPackReadyDeadlineMs(block) {
+                if (brideHairPackKey && block.key === brideHairPackKey && scheduleStartOverrides[brideHairPackKey] == null) {
+                    return readyMs - BRIDE_HAIR_FINISH_BUFFER_MS;
+                }
+                if (brideMkPackKey && block.key === brideMkPackKey && scheduleStartOverrides[brideMkPackKey] == null) {
+                    return readyMs - BRIDE_MAKEUP_FINISH_BUFFER_MS;
+                }
+                return readyMs;
+            }
+
             const leadPartyHairDur = hairStations.find(s => s.isLead).items.reduce((a, i) => a + i.duration, 0);
-            const leadPartyMakeupDur = makeupStations.find(s => s.isLead).items.reduce((a, i) => a + i.duration, 0);
 
             let hairSlots = [];
             let makeupSlots = [];
@@ -579,107 +1410,125 @@
             let brideMakeupStartMs = readyMs - brideMakeupBlockMin * 60000;
 
             const hairCombinedMin = brideHairBlockMin + leadPartyHairDur;
-            const hairLatestMsRaw = readyMs - hairCombinedMin * 60000;
+            const hairMegaLatestOrdinary = readyMs - hairCombinedMin * 60000;
+            const hairLatestForBridalEnd = readyMs - BRIDE_HAIR_FINISH_BUFFER_MS - brideHairBlockMin * 60000;
+            const hairLatestMsRaw = Math.min(hairMegaLatestOrdinary, hairLatestForBridalEnd);
             const hairLatestDate = new Date(Math.floor(Math.max(0, hairLatestMsRaw) / STEP_MS) * STEP_MS);
             const hairWindowMaxMs = Math.min(baselineLeadMs, hairLatestMsRaw);
-            let hairEarliestDate = new Date(Math.max(Math.min(hairWindowMaxMs, hairLatestMsRaw) - LOOKBACK_MS, Math.min(hairLatestMsRaw, readyMs - 24 * 3600000)));
+            let hairEarliestDate = new Date(Math.max(
+                Math.min(hairWindowMaxMs, hairLatestMsRaw) - LOOKBACK_MS,
+                Math.min(hairLatestMsRaw, readyMs - 24 * 3600000),
+                appointmentFloorMs
+            ));
             if (hairEarliestDate.getTime() > hairLatestDate.getTime()) hairEarliestDate = hairLatestDate;
 
+            // Lead makeup artist stacks from team baseline only (never bridal hair clock).
+            // Clipping the anchor to bridal hair wrongly inflated party-end and prevented makeup-before-hair.
             let makeupLeadStartMs = baselineLeadMs;
 
             if (hasBrideHair && hairCombinedMin >= 0) {
                 hairSlots = buildSlotsInclusive(readyDate, hairCombinedMin, hairEarliestDate, hairLatestDate);
-                if (hairSlots.length === 0) hairSlots.push(new Date(Math.floor(Math.max(0, hairLatestMsRaw) / STEP_MS) * STEP_MS));
-                const hairPref = (brideScheduleRow && brideScheduleRow.brideHairSlotHHMM) || hhmmLocal(leadStartTime);
+                if (hairSlots.length === 0) hairSlots.push(new Date(Math.max(Math.floor(Math.max(0, hairLatestMsRaw) / STEP_MS) * STEP_MS, appointmentFloorMs)));
+                const hairPref = (brideScheduleRow && brideScheduleRow.brideHairSlotHHMM) || hhmmLocal(new Date(baselineLeadMs));
                 const hairPick = closestTimeInSlotList(readyDate, hairSlots, hairPref) || hairSlots[hairSlots.length - 1];
                 brideHairChosenMs = hairPick.getTime();
                 if (brideScheduleRow) brideScheduleRow.brideHairSlotHHMM = hhmmLocal(hairPick);
             }
 
-            makeupLeadStartMs = Math.min(baselineLeadMs, hasBrideHair ? brideHairChosenMs : baselineLeadMs);
-            const makeupEarliestPartyEndMs = makeupLeadStartMs + leadPartyMakeupDur * 60000;
-
-            const mkLatestMsRaw = readyMs - brideMakeupBlockMin * 60000;
-            const mkLatestDate = new Date(Math.floor(mkLatestMsRaw / STEP_MS) * STEP_MS);
-            // Mirror hair's sliding lookback window so the bridal makeup picker isn't overly narrow,
-            // while still forbidding starts before lead party makeup has finished on the timeline.
+            const mkMegaLatestOrdinary = readyMs - brideMakeupBlockMin * 60000;
+            const mkLatestForBridalEnd = readyMs - BRIDE_MAKEUP_FINISH_BUFFER_MS - brideMakeupBlockMin * 60000;
+            const mkLatestMsRaw = Math.min(mkMegaLatestOrdinary, mkLatestForBridalEnd);
+            const mkLatestDate = new Date(Math.floor(Math.max(0, mkLatestMsRaw) / STEP_MS) * STEP_MS);
+            // Mirror hair lookback; bridal MU may start before lead party MU (planner override).
             const mkWindowMaxMs = Math.min(baselineLeadMs, mkLatestMsRaw);
             const makeupLookbackFloorMs = Math.max(
                 Math.min(mkWindowMaxMs, mkLatestMsRaw) - LOOKBACK_MS,
-                Math.min(mkLatestMsRaw, readyMs - 24 * 3600000)
+                Math.min(mkLatestMsRaw, readyMs - 24 * 3600000),
+                appointmentFloorMs
             );
-            const partyFloorSnappedMs = Math.ceil(makeupEarliestPartyEndMs / STEP_MS) * STEP_MS;
-            let makeupSlotsEarliestDate = new Date(Math.max(makeupLookbackFloorMs, partyFloorSnappedMs));
+            let makeupSlotsEarliestDate = new Date(makeupLookbackFloorMs);
             if (makeupSlotsEarliestDate.getTime() > mkLatestDate.getTime()) makeupSlotsEarliestDate = mkLatestDate;
 
             if (hasBrideMakeup && brideMakeupBlockMin > 0) {
-                makeupSlots = buildSlotsInclusive(readyDate, brideMakeupBlockMin, makeupSlotsEarliestDate,
-                    mkLatestDate.getTime() >= makeupSlotsEarliestDate.getTime() ? mkLatestDate : makeupSlotsEarliestDate);
+                makeupSlots = brideMakeupNonOverlapSlots(
+                    readyDate,
+                    brideMakeupBlockMin,
+                    appointmentFloorMs,
+                    mkLatestDate.getTime(),
+                    hasBrideHair,
+                    brideHairChosenMs,
+                    brideHairBlockMin,
+                    makeupSlotsEarliestDate.getTime(),
+                    STEP_MIN
+                );
                 if (makeupSlots.length === 0) {
-                    makeupSlots.push(new Date(Math.floor(Math.min(Math.max(mkLatestMsRaw, makeupEarliestPartyEndMs), mkLatestMsRaw) / STEP_MS) * STEP_MS));
+                    makeupSlots.push(new Date(Math.max(
+                        Math.floor(mkLatestMsRaw / STEP_MS) * STEP_MS,
+                        appointmentFloorMs
+                    )));
                 }
-                const mkPref = (brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM) || hhmmLocal(new Date(mkLatestMsRaw));
-                const mkPick = closestTimeInSlotList(readyDate, makeupSlots, mkPref) || makeupSlots[makeupSlots.length - 1];
+                const savedMkHHMM = ((brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM) || '').trim();
+                const parsedSavedMk = savedMkHHMM ? hhmmParseOnSameDay(readyDate, savedMkHHMM) : null;
+                const mkPickPool = bridalMakeupAutoPickSlots(hasBrideHair, brideHairChosenMs, brideHairBlockMin, makeupSlots);
+
+                let mkPrefHHMM;
+                if (parsedSavedMk && savedMkHHMM) {
+                    mkPrefHHMM = savedMkHHMM;
+                } else {
+                    mkPrefHHMM = hhmmLocal(mkPickPool[0]);
+                }
+
+                const mkPick =
+                    closestTimeInSlotList(readyDate, mkPickPool, mkPrefHHMM)
+                    || mkPickPool[0]
+                    || makeupSlots[0]
+                    || makeupSlots[makeupSlots.length - 1];
                 brideMakeupStartMs = mkPick.getTime();
                 if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(mkPick);
             }
 
             const slotAdjustmentMessages = [];
-            const STEP_MIN = STEP_MS / 60000;
-            const makeupLatestSnapMs = Math.floor(Math.max(0, readyMs - brideMakeupBlockMin * 60000) / STEP_MS) * STEP_MS;
+            const makeupLatestSnapMs =
+                Math.floor(Math.max(0, mkLatestMsRaw) / STEP_MS) * STEP_MS;
 
-            let hairLeadEffectiveMs = hasBrideHair ? brideHairChosenMs : baselineLeadMs;
-            let mkLeadEffectiveMs = makeupLeadStartMs;
             let brHairMs = brideHairChosenMs;
             let brMkMs = brideMakeupStartMs;
 
             for (let clashIter = 0; clashIter < 8; clashIter++) {
-                mkLeadEffectiveMs = Math.min(baselineLeadMs, hasBrideHair ? brHairMs : baselineLeadMs);
-                hairLeadEffectiveMs = hasBrideHair ? brHairMs : baselineLeadMs;
-
                 let changed = false;
-                const partyMkEndMsCalc = mkLeadEffectiveMs + leadPartyMakeupDur * 60000;
 
                 const brHairEndMs = brHairMs + brideHairBlockMin * 60000;
                 const brMkEndMs = brMkMs + brideMakeupBlockMin * 60000;
 
-                if (hasBrideMakeup && brMkMs + 250 < partyMkEndMsCalc) {
-                    const needStart = Math.ceil(partyMkEndMsCalc / STEP_MS) * STEP_MS;
-                    const slotsFix = buildSlotsInclusive(readyDate, brideMakeupBlockMin, new Date(needStart), new Date(Math.max(needStart, makeupLatestSnapMs)), STEP_MIN);
-                    const oldT = formatTime(new Date(brMkMs));
-                    const pick = closestTimeInSlotList(readyDate, slotsFix, brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM)
-                        || (slotsFix[0] || null);
-                    if (pick) {
-                        brMkMs = pick.getTime();
-                        if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pick);
-                        slotAdjustmentMessages.push(`Bridal makeup overlapped bridal party makeup on the lead schedule (started ${oldT}). Auto-adjusted makeup start to ${formatTime(pick)}.`);
-                        changed = true;
-                    } else {
-                        slotAdjustmentMessages.push('Bridal makeup would overlap lead party makeup, but no valid slot fits before Ready by — shorten party makeup or extend Ready by time.');
-                    }
-                }
-
-                let mkPartyEndRedo = mkLeadEffectiveMs + leadPartyMakeupDur * 60000;
-
                 const hairMkOverlap = hasBrideHair && hasBrideMakeup
                     && intervalsOverlapMs(brHairMs, brHairEndMs, brMkMs, brMkEndMs);
                 if (hairMkOverlap) {
-                    const needMkEarliest = Math.max(
-                        Math.ceil(mkPartyEndRedo / STEP_MS) * STEP_MS,
-                        Math.ceil(brHairEndMs / STEP_MS) * STEP_MS
+                    const unionLookLo = makeupSlotsEarliestDate.getTime();
+                    const unionSlots = brideMakeupNonOverlapSlots(
+                        readyDate,
+                        brideMakeupBlockMin,
+                        appointmentFloorMs,
+                        makeupLatestSnapMs,
+                        hasBrideHair,
+                        brHairMs,
+                        brideHairBlockMin,
+                        unionLookLo,
+                        STEP_MIN
                     );
-                    const mkSlotsOv = buildSlotsInclusive(readyDate, brideMakeupBlockMin,
-                        new Date(needMkEarliest), new Date(Math.max(needMkEarliest, makeupLatestSnapMs)), STEP_MIN);
+                    const poolUnion = bridalMakeupAutoPickSlots(hasBrideHair, brHairMs, brideHairBlockMin, unionSlots);
+                    const pickUnion =
+                        closestTimeInSlotList(readyDate, poolUnion, hhmmLocal(new Date(brMkMs)))
+                        || (poolUnion[0] || unionSlots[0] || null);
 
-                    let pick = closestTimeInSlotList(readyDate, mkSlotsOv, brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM)
-                        || (mkSlotsOv[0] || null);
-
-                    if (pick && pick.getTime() >= needMkEarliest - 250 && pick.getTime() + brideMakeupBlockMin * 60000 <= readyMs + 599) {
-                        const oldHair = formatTime(new Date(brHairMs));
+                    if (pickUnion) {
                         const oldMk = formatTime(new Date(brMkMs));
-                        brMkMs = pick.getTime();
-                        if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pick);
-                        slotAdjustmentMessages.push(`The bride was double-booked for hair (${oldHair}) and makeup (${oldMk}). Auto-set makeup after hair ends (${formatTime(pick)}–${formatTime(new Date(brMkMs + brideMakeupBlockMin * 60000))}).`);
+                        brMkMs = pickUnion.getTime();
+                        if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pickUnion);
+                        const mkEndAfter = brMkMs + brideMakeupBlockMin * 60000;
+                        const placeNote = mkEndAfter <= brHairMs + 250
+                            ? `before hair (${formatTime(pickUnion)}–${formatTime(new Date(mkEndAfter))})`
+                            : `after hair (${formatTime(pickUnion)}–${formatTime(new Date(mkEndAfter))})`;
+                        slotAdjustmentMessages.push(`Bridal hair and makeup overlapped. Auto-set bridal makeup ${placeNote} (was ${oldMk}).`);
                         changed = true;
                     } else {
                         const latestHairStartAllow = Math.min(hairLatestMsRaw, Math.max(0, brMkMs - brideHairBlockMin * 60000));
@@ -699,24 +1548,28 @@
                             const oldHairTime = formatTime(new Date(brHairMs));
                             brHairMs = hairPick2.getTime();
                             if (brideScheduleRow) brideScheduleRow.brideHairSlotHHMM = hhmmLocal(hairPick2);
-                            mkLeadEffectiveMs = Math.min(baselineLeadMs, brHairMs);
-                            mkPartyEndRedo = mkLeadEffectiveMs + leadPartyMakeupDur * 60000;
-                            const mkNeedAfterHair = Math.max(
-                                Math.ceil(mkPartyEndRedo / STEP_MS) * STEP_MS,
-                                Math.ceil((brHairMs + brideHairBlockMin * 60000) / STEP_MS) * STEP_MS
-                            );
-                            const mkSlots2 = buildSlotsInclusive(
+                            const unionLookLo2 = makeupSlotsEarliestDate.getTime();
+                            const retryUnion = brideMakeupNonOverlapSlots(
                                 readyDate,
                                 brideMakeupBlockMin,
-                                new Date(mkNeedAfterHair),
-                                new Date(Math.max(mkNeedAfterHair, makeupLatestSnapMs)),
+                                appointmentFloorMs,
+                                makeupLatestSnapMs,
+                                hasBrideHair,
+                                brHairMs,
+                                brideHairBlockMin,
+                                unionLookLo2,
                                 STEP_MIN
                             );
-                            pick = closestTimeInSlotList(readyDate, mkSlots2, brideScheduleRow && brideScheduleRow.brideMakeupSlotHHMM) || mkSlots2[mkSlots2.length - 1];
-                            if (pick) {
-                                brMkMs = pick.getTime();
-                                if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pick);
-                                slotAdjustmentMessages.push(`Bridal hair and makeup overlapped. Moved bridal hair from ${oldHairTime} to ${formatTime(hairPick2)}, then set makeup so it starts after hair.`);
+                            const poolRetry = bridalMakeupAutoPickSlots(hasBrideHair, brHairMs, brideHairBlockMin, retryUnion);
+                            const pickRetry =
+                                closestTimeInSlotList(readyDate, poolRetry, hhmmLocal(new Date(brMkMs)))
+                                || poolRetry[0]
+                                || retryUnion[0]
+                                || null;
+                            if (pickRetry) {
+                                brMkMs = pickRetry.getTime();
+                                if (brideScheduleRow) brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(pickRetry);
+                                slotAdjustmentMessages.push(`Bridal hair and makeup overlapped. Moved bridal hair from ${oldHairTime} to ${formatTime(hairPick2)}, then set makeup to align before or after hair.`);
                                 changed = true;
                             }
                         }
@@ -732,64 +1585,91 @@
 
             brideHairChosenMs = brHairMs;
             brideMakeupStartMs = brMkMs;
-            makeupLeadStartMs = Math.min(baselineLeadMs, hasBrideHair ? brideHairChosenMs : baselineLeadMs);
+
+            if (brideScheduleRow != null && brideScheduleRow.id != null) {
+                const brid = brideScheduleRow.id;
+                const floorClamp = appointmentFloorMs;
+                if (hasBrideHair) {
+                    const hk = makeBlockKey('Hair', 0, brid, false);
+                    if (scheduleStartOverrides[hk] != null) {
+                        brideHairChosenMs = clampStartForDuration(
+                            scheduleStartOverrides[hk],
+                            brideHairBlockMin * 60000,
+                            floorClamp,
+                            readyMs
+                        );
+                        brideScheduleRow.brideHairSlotHHMM = hhmmLocal(new Date(brideHairChosenMs));
+                    }
+                }
+                if (hasBrideMakeup) {
+                    const mkk = makeBlockKey('Makeup', 0, brid, false);
+                    if (scheduleStartOverrides[mkk] != null) {
+                        brideMakeupStartMs = clampStartForDuration(
+                            scheduleStartOverrides[mkk],
+                            brideMakeupBlockMin * 60000,
+                            floorClamp,
+                            readyMs
+                        );
+                        brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(new Date(brideMakeupStartMs));
+                    }
+                }
+                if (hasBrideHair && hasBrideMakeup) {
+                    const mkkOv = makeBlockKey('Makeup', 0, brid, false);
+                    const h0 = brideHairChosenMs;
+                    const h1 = h0 + brideHairBlockMin * 60000;
+                    const m0 = brideMakeupStartMs;
+                    const m1 = m0 + brideMakeupBlockMin * 60000;
+                    if (scheduleStartOverrides[mkkOv] == null && intervalsOverlapMs(h0, h1, m0, m1)) {
+                        const unionSlotsFix = brideMakeupNonOverlapSlots(
+                            readyDate,
+                            brideMakeupBlockMin,
+                            appointmentFloorMs,
+                            makeupLatestSnapMs,
+                            true,
+                            h0,
+                            brideHairBlockMin,
+                            makeupSlotsEarliestDate.getTime(),
+                            STEP_MIN
+                        );
+                        const poolFix = bridalMakeupAutoPickSlots(true, h0, brideHairBlockMin, unionSlotsFix);
+                        const nearest =
+                            closestTimeInSlotList(readyDate, poolFix, hhmmLocal(new Date(m0)))
+                            || poolFix[poolFix.length - 1]
+                            || unionSlotsFix[unionSlotsFix.length - 1]
+                            || null;
+                        if (nearest) {
+                            brideMakeupStartMs = nearest.getTime();
+                            brideScheduleRow.brideMakeupSlotHHMM = hhmmLocal(nearest);
+                        }
+                    }
+                }
+            }
+
+            makeupLeadStartMs = baselineLeadMs;
             const hairLeadStartMs = hasBrideHair ? brideHairChosenMs : baselineLeadMs;
+
+            if (hasBrideMakeup && brideMakeupBlockMin > 0) {
+                makeupSlots = brideMakeupNonOverlapSlots(
+                    readyDate,
+                    brideMakeupBlockMin,
+                    appointmentFloorMs,
+                    mkLatestDate.getTime(),
+                    hasBrideHair,
+                    brideHairChosenMs,
+                    brideHairBlockMin,
+                    makeupSlotsEarliestDate.getTime(),
+                    STEP_MIN
+                );
+                if (makeupSlots.length === 0) {
+                    makeupSlots.push(new Date(Math.max(
+                        Math.floor(mkLatestMsRaw / STEP_MS) * STEP_MS,
+                        appointmentFloorMs
+                    )));
+                }
+            }
 
             const brideCtlWrap = document.getElementById('brideSlotControlsWrap');
             const slotAlerts = Array.from(new Set(slotAdjustmentMessages));
-
-            const SCHED_EPS = 2;
-            let brideHairTimingOK = true;
-            let brideMakeupTimingOK = true;
-            if (brideScheduleRow && (hasBrideHair || hasBrideMakeup)) {
-                const hEndMs = hasBrideHair ? brideHairChosenMs + brideHairBlockMin * 60000 : 0;
-                const mEndMs = hasBrideMakeup ? brideMakeupStartMs + brideMakeupBlockMin * 60000 : 0;
-                const bridalOverlap = hasBrideHair && hasBrideMakeup
-                    && intervalsOverlapMs(brideHairChosenMs, hEndMs, brideMakeupStartMs, mEndMs);
-
-                if (hasBrideHair) {
-                    brideHairTimingOK = hEndMs <= readyMs + SCHED_EPS && !bridalOverlap;
-                }
-                if (hasBrideMakeup) {
-                    const makeupPartyConflict = leadPartyMakeupDur > 0
-                        && brideMakeupStartMs + SCHED_EPS < makeupLeadStartMs + leadPartyMakeupDur * 60000;
-                    brideMakeupTimingOK = mEndMs <= readyMs + SCHED_EPS && !makeupPartyConflict && !bridalOverlap;
-                }
-            }
-
-            let hairOpts = '';
-            let makeupOpts = '';
-            const showBrideTimelineSlots = !!(brideScheduleRow && (hasBrideHair || hasBrideMakeup));
-            if (showBrideTimelineSlots) {
-                let hairSlotsForUi = hasBrideHair ? hairSlots.slice() : [];
-                const chH = hasBrideHair ? hhmmLocal(new Date(brideHairChosenMs)) : '';
-                if (hasBrideHair && chH && !hairSlotsForUi.some(dt => hhmmLocal(dt) === chH)) {
-                    hairSlotsForUi.push(new Date(Math.floor(brideHairChosenMs / STEP_MS) * STEP_MS));
-                    hairSlotsForUi.sort((a, b) => a.getTime() - b.getTime());
-                }
-                let makeupSlotsForUi = hasBrideMakeup ? makeupSlots.slice() : [];
-                const chM = hasBrideMakeup ? hhmmLocal(new Date(brideMakeupStartMs)) : '';
-                if (hasBrideMakeup && chM && !makeupSlotsForUi.some(dt => hhmmLocal(dt) === chM)) {
-                    makeupSlotsForUi.push(new Date(Math.floor(brideMakeupStartMs / STEP_MS) * STEP_MS));
-                    makeupSlotsForUi.sort((a, b) => a.getTime() - b.getTime());
-                }
-
-                hairOpts = hasBrideHair && hairSlotsForUi.length
-                    ? hairSlotsForUi.map(dt => `<option value="${escapeHtml(hhmmLocal(dt))}"${hhmmLocal(dt) === (brideScheduleRow.brideHairSlotHHMM || '') ? ' selected' : ''}>${escapeHtml(formatTime(dt))}${escapeHtml(` → ${formatTime(new Date(dt.getTime() + brideHairBlockMin * 60000))}`)}</option>`).join('')
-                    : '';
-                makeupOpts = hasBrideMakeup && makeupSlotsForUi.length
-                    ? makeupSlotsForUi.map(dt => `<option value="${escapeHtml(hhmmLocal(dt))}"${hhmmLocal(dt) === (brideScheduleRow.brideMakeupSlotHHMM || '') ? ' selected' : ''}>${escapeHtml(formatTime(dt))}${escapeHtml(` → ${formatTime(new Date(dt.getTime() + brideMakeupBlockMin * 60000))}`)}</option>`).join('')
-                    : '';
-            }
-
-            const selBdHair = brideHairTimingOK
-                ? 'border-slate-200 focus:border-slate-400 focus:ring-slate-400'
-                : 'border-rose-500 focus:border-rose-500 focus:ring-rose-400';
-            const selBdMakeup = brideMakeupTimingOK
-                ? 'border-slate-200 focus:border-slate-400 focus:ring-slate-400'
-                : 'border-rose-500 focus:border-rose-500 focus:ring-rose-400';
-
-            const brideConflictXSvg = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg>';
 
             if (brideCtlWrap) {
                 const hasAlerts = slotAlerts.length > 0;
@@ -799,8 +1679,6 @@
                     ? `<div role="alert" class="rounded-lg border border-amber-500/70 bg-amber-50 px-3 py-2.5 shadow-sm">${slotAlerts.map(msg => `<p class="text-[11px] font-semibold text-amber-950 leading-snug mb-1.5 last:mb-0">${escapeHtml(msg)}</p>`).join('')}</div>`
                     : '';
             }
-
-            let teamEarliestArrival = new Date(Math.min(makeupLeadStartMs, hairLeadStartMs));
 
             rosterContainer.innerHTML = roster.map(p => {
                 const isBride = p.role === 'Bride';
@@ -870,162 +1748,253 @@
                 `;
             }).join('');
 
-            let timelinesHTML = '';
             const scheduleExportRows = [];
-            const processStation = (station, type, index) => {
+
+            function rosterPersonLookup(rid) {
+                return roster.find(p => p.id === rid && p.type === 'person');
+            }
+            function rosterTouchLookup(rid) {
+                return roster.find(p => p.id === rid && p.type === 'touchup');
+            }
+
+            const trackGroups = {};
+            let packTimelineOrder = 0;
+
+            function stashTrackBlocks(discipline, artistIndex, blocks) {
+                trackGroups[`${discipline}-${artistIndex}`] = blocks;
+            }
+
+            function appendBlock(blocks, cfg) {
+                const sm = cfg.startMs;
+                const dm = cfg.durationMin;
+                blocks.push({
+                    key: makeBlockKey(cfg.discipline, cfg.artistIndex, cfg.rosterId, cfg.isTouchup),
+                    discipline: cfg.discipline,
+                    artistIndex: cfg.artistIndex,
+                    isLead: cfg.isLead,
+                    durationMin: dm,
+                    rosterId: cfg.rosterId,
+                    isTouchup: !!cfg.isTouchup,
+                    isBride: !!cfg.isBride,
+                    serviceWord: cfg.serviceWord,
+                    title: cfg.title,
+                    subtitle: cfg.subtitle || '',
+                    exportTitle: cfg.exportTitle,
+                    packOrder: packTimelineOrder++,
+                    autoStartMs: sm,
+                    startMs: sm,
+                    endMs: sm + dm * 60000
+                });
+            }
+
+            hairStations.sort((a, b) => (a.isLead ? -1 : 1));
+            makeupStations.sort((a, b) => (a.isLead ? -1 : 1));
+
+            hairStations.forEach((station, index) => {
+                const discipline = 'Hair';
                 const isLead = station.isLead;
-                const stationPartyTotal = station.items.reduce((sum, i) => sum + i.duration, 0);
-                const stationTouchupTotal = station.touchups.reduce((sum, i) => sum + i.duration, 0);
+                const blocks = [];
+                const stationPartyTotal = station.items.reduce((s, i) => s + i.duration, 0);
+                const stationTouchupTotal = station.touchups.reduce((s, i) => s + i.duration, 0);
 
-                let startTime;
-                if (isLead && type === 'Hair') startTime = new Date(hairLeadStartMs);
-                else if (isLead && type === 'Makeup') startTime = new Date(makeupLeadStartMs);
-                else startTime = new Date(readyDate.getTime() - ((stationPartyTotal + stationTouchupTotal) * 60000));
+                let startMs;
+                if (isLead) startMs = hasBrideHair ? brideHairChosenMs : hairLeadStartMs;
+                else {
+                    let stMs = readyMs - (stationPartyTotal + stationTouchupTotal) * 60000;
+                    if (stMs < appointmentFloorMs) stMs = appointmentFloorMs;
+                    startMs = stMs;
+                }
+                startMs = Math.max(startMs, appointmentFloorMs);
+                let cur = startMs;
 
-                if (startTime < teamEarliestArrival) teamEarliestArrival = startTime;
-
-                const pushExport = (rowType, title, startD, endD, durationMin) => {
-                    scheduleExportRows.push([
-                        rowType,
-                        type,
-                        String(index + 1),
-                        isLead ? 'Lead' : 'Support',
-                        title,
-                        formatTime(startD),
-                        formatTime(endD),
-                        durationMin === '' || durationMin == null ? '' : String(durationMin)
-                    ]);
-                };
-
-                let html = `<div>
-                    <h3 class="flex items-center text-sm font-bold uppercase tracking-widest ${isLead ? 'text-slate-900' : 'text-slate-400'} mb-3">
-                        <span class="w-2 h-2 rounded-full ${isLead ? 'bg-rose-600' : 'bg-slate-300'} mr-2"></span>
-                        ${type} Artist ${index + 1} ${isLead ? '(LEAD)' : ''}
-                    </h3>
-                    <div class="space-y-2">
-                `;
-
-                let currentTime = new Date(startTime.getTime());
-
-                if (type === 'Hair' && isLead && hasBrideHair) {
-                    const brideStart = new Date(currentTime.getTime());
-                    const brideEnd = new Date(brideStart.getTime() + (brideHairBlockMin * 60000));
-                    const brideHairTitle = brideNameDisplay
-                        ? `${brideNameDisplay} · BRIDE · Hair`
-                        : 'THE BRIDE (Hair)';
-                    pushExport('Appointment', brideHairTitle, brideStart, brideEnd, brideHairBlockMin);
-                    const hairWarn = !brideHairTimingOK
-                        ? `<span class="shrink-0 text-rose-600" role="img" aria-label="Timing conflict" title="Ends after Ready by or overlaps bridal makeup">${brideConflictXSvg}</span>`
-                        : '<span class="w-4 shrink-0" aria-hidden="true"></span>';
-                    html += `
-                        <details class="bride-slot-adj rounded-lg bg-rose-50 shadow-md border-l-4 border-rose-600 ${brideHairTimingOK ? 'border border-rose-100' : 'border border-rose-400 ring-2 ring-rose-300/80'}" ${!brideHairTimingOK ? 'open' : ''}>
-                            <summary class="flex cursor-pointer items-center gap-2 p-3 text-left rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2">
-                                <span class="sr-only">Show or hide bridal hair start time adjuster.</span>
-                                <div class="min-w-0 flex-1">
-                                    ${brideNameDisplay
-                                        ? `<div class="text-[11px] font-black text-rose-900 normal-case tracking-tight">${escapeHtml(brideNameDisplay)} · BRIDE · Hair</div>`
-                                        : `<div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Hair)</div>`}
-                                    <div class="text-[9px] font-semibold uppercase tracking-wide text-rose-500/90 mt-0.5">Tap to adjust start</div>
-                                </div>
-                                <div class="text-right text-[11px] font-black text-rose-600 shrink-0">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
-                                ${hairWarn}
-                                <svg class="bride-slot-chevron h-4 w-4 shrink-0 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
-                            </summary>
-                            <div class="border-t border-rose-200/70 px-3 pb-3 pt-3">
-                                <label class="block">
-                                    <span class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Hair start</span>
-                                    <select class="w-full rounded-lg px-2 py-2 text-xs font-semibold bg-white outline-none ring-2 ring-transparent ${selBdHair}" onchange="setBrideHairSlotHHMM(this.value)">${hairOpts || '<option value="">No valid slots</option>'}</select>
-                                    <span class="text-[9px] text-slate-600 mt-1.5 block">${escapeHtml(`Ready by ${formatTime(readyDate)} · Hair ends ${formatTime(new Date(Math.min(brideHairChosenMs + brideHairBlockMin * 60000, readyMs)))}`)}</span>
-                                </label>
-                            </div>
-                        </details>
-                    `;
-                    currentTime = brideEnd;
+                if (isLead && hasBrideHair) {
+                    const bp = roster.find(p => p.type === 'person' && p.role === 'Bride');
+                    const bn = brideNameDisplay;
+                    appendBlock(blocks, {
+                        discipline,
+                        artistIndex: index,
+                        isLead,
+                        rosterId: bp.id,
+                        isTouchup: false,
+                        isBride: true,
+                        durationMin: brideHairBlockMin,
+                        serviceWord: 'Hair',
+                        title: bn || 'Bride',
+                        subtitle: personBracketLabel(bp),
+                        exportTitle: bn ? `${bn} · BRIDE · Hair` : 'THE BRIDE (Hair)',
+                        startMs: cur
+                    });
+                    cur += brideHairBlockMin * 60000;
                 }
 
-                station.items.forEach(item => {
-                    const itemEnd = new Date(currentTime.getTime() + (item.duration * 60000));
-                    pushExport(item.isTouchup ? 'Touch-up' : 'Appointment', item.label, currentTime, itemEnd, item.duration);
-                    html += `
-                        <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100 shadow-sm border-l-4 border-slate-300">
-                            <div><div class="text-[11px] font-bold text-slate-700 normal-case tracking-tight">${escapeHtml(item.label)}</div></div>
-                            <div class="text-right text-[11px] font-extrabold text-slate-900">${formatTime(currentTime)} - ${formatTime(itemEnd)}</div>
-                        </div>
-                    `;
-                    currentTime = itemEnd;
+                station.items.forEach(entry => {
+                    const rp = rosterPersonLookup(entry.rosterId);
+                    appendBlock(blocks, {
+                        discipline,
+                        artistIndex: index,
+                        isLead,
+                        rosterId: entry.rosterId,
+                        isTouchup: false,
+                        isBride: false,
+                        durationMin: entry.duration,
+                        serviceWord: 'Hair',
+                        title: rp ? scheduleBaseLabel(rp) : entry.label,
+                        subtitle: rp ? personBracketLabel(rp) : '',
+                        exportTitle: entry.label,
+                        startMs: cur
+                    });
+                    cur += entry.duration * 60000;
                 });
 
-                if (type === 'Makeup' && isLead && hasBrideMakeup) {
-                    const brideStart = new Date(brideMakeupStartMs);
-                    const brideEnd = new Date(brideMakeupStartMs + brideMakeupBlockMin * 60000);
-                    if (brideStart > currentTime) {
-                        html += `<div class="py-1 text-center text-[9px] text-slate-300 font-bold uppercase tracking-widest border-y border-dashed border-slate-100 my-1">Transitional Gap</div>`;
-                        pushExport('Gap', 'Transitional gap', currentTime, brideStart,
-                            Math.round((brideStart.getTime() - currentTime.getTime()) / 60000));
+                station.touchups.forEach(entry => {
+                    const tu = rosterTouchLookup(entry.rosterId);
+                    appendBlock(blocks, {
+                        discipline,
+                        artistIndex: index,
+                        isLead,
+                        rosterId: entry.rosterId,
+                        isTouchup: true,
+                        isBride: false,
+                        durationMin: entry.duration,
+                        serviceWord: 'Touch-up',
+                        title: tu ? String(tu.role || 'Touch Ups') : 'Touch Ups',
+                        subtitle: '[Touch-up]',
+                        exportTitle: entry.label,
+                        startMs: cur
+                    });
+                    cur += entry.duration * 60000;
+                });
+
+                stashTrackBlocks(discipline, index, blocks);
+            });
+
+            makeupStations.forEach((station, index) => {
+                const discipline = 'Makeup';
+                const isLead = station.isLead;
+                const blocks = [];
+                const stationPartyTotal = station.items.reduce((s, i) => s + i.duration, 0);
+                const stationTouchupTotal = station.touchups.reduce((s, i) => s + i.duration, 0);
+
+                let curMk;
+                if (isLead && hasBrideMakeup) {
+                    curMk = brideMakeupStartMs;
+                    const bp = roster.find(p => p.type === 'person' && p.role === 'Bride');
+                    const bn = brideNameDisplay;
+                    appendBlock(blocks, {
+                        discipline,
+                        artistIndex: index,
+                        isLead,
+                        rosterId: bp.id,
+                        isTouchup: false,
+                        isBride: true,
+                        durationMin: brideMakeupBlockMin,
+                        serviceWord: 'Makeup',
+                        title: bn || 'Bride',
+                        subtitle: personBracketLabel(bp),
+                        exportTitle: bn ? `${bn} · BRIDE · Makeup` : 'THE BRIDE (Makeup)',
+                        startMs: curMk
+                    });
+                    curMk = brideMakeupStartMs + brideMakeupBlockMin * 60000;
+                    curMk = Math.max(curMk, makeupLeadStartMs);
+                } else {
+                    let startMs;
+                    if (isLead) startMs = makeupLeadStartMs;
+                    else {
+                        let stMs = readyMs - (stationPartyTotal + stationTouchupTotal) * 60000;
+                        if (stMs < appointmentFloorMs) stMs = appointmentFloorMs;
+                        startMs = stMs;
                     }
-                    const brideMakeupTitle = brideNameDisplay
-                        ? `${brideNameDisplay} · BRIDE · Makeup`
-                        : 'THE BRIDE (Makeup)';
-                    pushExport('Appointment', brideMakeupTitle, brideStart, brideEnd, brideMakeupBlockMin);
-                    const mkWarn = !brideMakeupTimingOK
-                        ? `<span class="shrink-0 text-rose-600" role="img" aria-label="Timing conflict" title="Conflicts with Ready by, lead party makeup, or overlaps hair">${brideConflictXSvg}</span>`
-                        : '<span class="w-4 shrink-0" aria-hidden="true"></span>';
-                    html += `
-                        <details class="bride-slot-adj rounded-lg bg-rose-50 shadow-md border-l-4 border-rose-600 ${brideMakeupTimingOK ? 'border border-rose-100' : 'border border-rose-400 ring-2 ring-rose-300/80'}" ${!brideMakeupTimingOK ? 'open' : ''}>
-                            <summary class="flex cursor-pointer items-center gap-2 p-3 text-left rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2">
-                                <span class="sr-only">Show or hide bridal makeup start time adjuster.</span>
-                                <div class="min-w-0 flex-1">
-                                    ${brideNameDisplay
-                                        ? `<div class="text-[11px] font-black text-rose-900 normal-case tracking-tight">${escapeHtml(brideNameDisplay)} · BRIDE · Makeup</div>`
-                                        : `<div class="text-[11px] font-black text-rose-900 uppercase">THE BRIDE (Makeup)</div>`}
-                                    <div class="text-[9px] font-semibold uppercase tracking-wide text-rose-500/90 mt-0.5">Tap to adjust start</div>
-                                </div>
-                                <div class="text-right text-[11px] font-black text-rose-600 shrink-0">${formatTime(brideStart)} - ${formatTime(brideEnd)}</div>
-                                ${mkWarn}
-                                <svg class="bride-slot-chevron h-4 w-4 shrink-0 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
-                            </summary>
-                            <div class="border-t border-rose-200/70 px-3 pb-3 pt-3">
-                                <label class="block">
-                                    <span class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Makeup start</span>
-                                    <select class="w-full rounded-lg px-2 py-2 text-xs font-semibold bg-white outline-none ring-2 ring-transparent ${selBdMakeup}" onchange="setBrideMakeupSlotHHMM(this.value)">${makeupOpts || '<option value="">No valid slots</option>'}</select>
-                                    <span class="text-[9px] text-slate-600 mt-1.5 block">${escapeHtml(`Ready by ${formatTime(readyDate)} · Makeup ends ${formatTime(new Date(Math.min(brideMakeupStartMs + brideMakeupBlockMin * 60000, readyMs)))}`)}</span>
-                                </label>
-                            </div>
-                        </details>
-                    `;
-                    currentTime = brideEnd;
+                    curMk = Math.max(startMs, appointmentFloorMs);
                 }
 
-                station.touchups.forEach(item => {
-                    const itemEnd = new Date(currentTime.getTime() + (item.duration * 60000));
-                    pushExport('Touch-up', item.label, currentTime, itemEnd, item.duration);
-                    html += `
-                        <div class="flex justify-between items-center p-3 rounded-lg bg-rose-50/50 border border-rose-100 border-l-4 border-rose-400 italic">
-                            <div><div class="text-[11px] font-bold text-rose-800 normal-case tracking-tight">${escapeHtml(item.label)}</div></div>
-                            <div class="text-right text-[11px] font-bold text-rose-600">${formatTime(currentTime)} - ${formatTime(itemEnd)}</div>
-                        </div>
-                    `;
-                    currentTime = itemEnd;
+                station.items.forEach(entry => {
+                    const rp = rosterPersonLookup(entry.rosterId);
+                    appendBlock(blocks, {
+                        discipline,
+                        artistIndex: index,
+                        isLead,
+                        rosterId: entry.rosterId,
+                        isTouchup: false,
+                        isBride: false,
+                        durationMin: entry.duration,
+                        serviceWord: 'Makeup',
+                        title: rp ? scheduleBaseLabel(rp) : entry.label,
+                        subtitle: rp ? personBracketLabel(rp) : '',
+                        exportTitle: entry.label,
+                        startMs: curMk
+                    });
+                    curMk += entry.duration * 60000;
                 });
 
-                html += `</div></div>`;
-                return html;
-            };
+                station.touchups.forEach(entry => {
+                    const tu = rosterTouchLookup(entry.rosterId);
+                    appendBlock(blocks, {
+                        discipline,
+                        artistIndex: index,
+                        isLead,
+                        rosterId: entry.rosterId,
+                        isTouchup: true,
+                        isBride: false,
+                        durationMin: entry.duration,
+                        serviceWord: 'Touch-up',
+                        title: tu ? String(tu.role || 'Touch Ups') : 'Touch Ups',
+                        subtitle: '[Touch-up]',
+                        exportTitle: entry.label,
+                        startMs: curMk
+                    });
+                    curMk += entry.duration * 60000;
+                });
 
-            hairStations.sort((a,b) => (a.isLead ? -1 : 1));
-            makeupStations.sort((a,b) => (a.isLead ? -1 : 1));
+                stashTrackBlocks(discipline, index, blocks);
+            });
 
-            hairStations.forEach((s, i) => timelinesHTML += processStation(s, 'Hair', i));
-            makeupStations.forEach((s, i) => timelinesHTML += processStation(s, 'Makeup', i));
+            const flattenedTimeline = [];
 
-            timelineContainer.innerHTML = timelinesHTML;
-            document.getElementById('displayStart').innerText = formatTime(teamEarliestArrival);
+            Object.keys(trackGroups).sort((a, b) => {
+                const [da, ia] = a.split('-');
+                const [db, ib] = b.split('-');
+                if (da !== db) return da.localeCompare(db);
+                return (parseInt(ia, 10) || 0) - (parseInt(ib, 10) || 0);
+            }).forEach(tk => {
+                const laneBlocks = trackGroups[tk];
+                laneBlocks.forEach(b => {
+                    const ov = scheduleStartOverrides[b.key];
+                    const durMs = b.durationMin * 60000;
+                    if (ov != null) {
+                        b.startMs = clampStartForDuration(ov, durMs, appointmentFloorMs, readyMs);
+                        b.endMs = b.startMs + durMs;
+                    }
+                    b.autoStartMs = b.startMs;
+                });
+                const ordered = sortBlocksForPack(laneBlocks);
+                sequentialPackTrack(ordered, appointmentFloorMs, getPackReadyDeadlineMs);
+                ordered.forEach(b => {
+                    flattenedTimeline.push(b);
+                    scheduleExportRows.push([
+                        b.isTouchup ? 'Touch-up' : 'Appointment',
+                        b.discipline,
+                        String(b.artistIndex + 1),
+                        b.isLead ? 'Lead' : 'Support',
+                        b.exportTitle,
+                        formatTime(new Date(b.startMs)),
+                        formatTime(new Date(b.endMs)),
+                        String(b.durationMin)
+                    ]);
+                });
+            });
+
+            const teamEarliestArrival =
+                flattenedTimeline.length > 0
+                    ? new Date(Math.min(...flattenedTimeline.map(b => b.startMs)))
+                    : null;
+
+            renderTwelveHourTimeline(flattenedTimeline, readyDate, teamEarliestArrival);
 
             const dayTag = `${readyDate.getFullYear()}-${String(readyDate.getMonth() + 1).padStart(2, '0')}-${String(readyDate.getDate()).padStart(2, '0')}`;
             window.__timelineExport = {
                 filename: `Master_Schedule_${dayTag}.csv`,
                 summary: [
-                    ['Summary', '', '', '', 'Earliest team arrival', formatTime(teamEarliestArrival), '', ''],
+                    ['Summary', '', '', '', 'Earliest team arrival', teamEarliestArrival ? formatTime(teamEarliestArrival) : '--', '', ''],
                     ['Summary', '', '', '', 'Ready by', formatTime(readyDate), '', ''],
                     ['Summary', '', '', '', 'Hair artists', String(hairArtistsCount), '', ''],
                     ['Summary', '', '', '', 'Makeup artists', String(makeupArtistsCount), '', ''],
